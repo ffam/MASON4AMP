@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<plugin>
+
+  <extension point="org.eclipse.emf.ecore.generated_package">
+    <package 
+       uri = "http://www.eclipse.org/amp/amf/parameters/APar" 
+       class = "org.eclipse.amp.amf.parameters.aPar.AParPackage"
+       genModel = "org/eclipse/amp/amf/parameters/APar.genmodel" /> 
+	
+  </extension>
+  <extension
+        point="org.eclipse.emf.ecore.uri_mapping">
+     <mapping
+           source="http://metaabm.org/Engine.metaabm"
+           target="platform:/plugin/org.eclipse.amp.amf.parameters/src/model/Engine.metaabm">
+     </mapping>
+  </extension>
+</plugin>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet
+      title="Loading Example Projects">
+   <intro
+         href="/org.eclipse.ui. cheatsheets.doc/tasks/tcheatst.htm">
+            <description>
+Before we do anything else, let&apos;s import some example projects into our workspace so that we can explore some pre-built models! If you&apos;ve installed the complete development environment you&apos;ll see that it includes an &quot;Examples&quot; directory. If you&apos;ve installed from an update site, please use the &quot;Loading Example Projects from Version Control&quot; cheatsheet instead.ples&quot; directory. If you&apos;ve installed from an update site, please use the &quot;Loading Example Project from Version Control&quot; cheatsheet instead.
+      </description>
+   </intro>
+   <item
+         href="/org.eclipse.platform.doc.user/tasks/tasks-9f.htm"
+         skip="false"
+         title="Import Projects">
+      <description>
+         Right-click in the Package Explorer. Select &quot;Import..&quot; and then open the &quot;General&quot; folder and choose &quot;Existing Projects into Workspace&quot;. Select &quot;Next&quot; and then click the &quot;Browse&quot; button next to &quot;Select Root Directory&quot;. Find the ExampleProject folder in your installation directory and select it. The projects that you want will be automatically selected, so you just need to click finish and the projects will be imported.
+      </description>
+      <command
+            required="false"
+            serialization="org.eclipse.ui.file.import(importWizardId=org.eclipse.ui.wizards.import.ExternalProject)"/>
+   </item>
+   <item
+         href="/org.eclipse.platform.doc.user/tasks/tasks-9f.htm"
+         skip="false"
+         title="That&apos;s it">
+      <description>
+         If everything went correctly you should see a number of projects in the package explorer! (The projects included will be different depending on the version of the agent tools tht you have installed.)
+      </description>
+   </item>
+</cheatsheet>

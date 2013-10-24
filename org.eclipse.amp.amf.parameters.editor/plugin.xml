@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id: plugin.xml,v 1.4 2010/08/04 01:55:00 mparker Exp $
+-->
+
+<plugin>
+
+
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            id="org.eclipse.amp.amf.parameters.aPar.presentation.AParEditorID"
+            name="Parameter Model Editor"
+            icon="icons/full/obj16/parameter_file.gif"
+            extensions="apar"
+            class="org.eclipse.amp.amf.parameters.aPar.presentation.AParEditor"
+            contributorClass="org.eclipse.amp.amf.parameters.aPar.presentation.AParActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>

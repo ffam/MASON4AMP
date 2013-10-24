@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id: plugin.xml,v 1.7 2010/08/04 01:54:01 mparker Exp $
+-->
+
+<plugin>
+   <extension-point id="newProjectWizardConfigurations" name="New-Project-Wizard Configurations" schema="schema/newProjectWizardConfigurations.exsd"/>
+	<extension
+          id="docBuilder"
+          name="MetaABM Documentation"
+          point="org.eclipse.core.resources.builders">
+       <builder
+             callOnEmptyDelta="false"
+             hasNature="false">
+          <run class="org.eclipse.amp.amf.gen.ide.DocumentModelBuilder"/>
+       </builder>
+    </extension>
+    <extension
+          id="baseBuilder"
+          name="MetaABM Base Builder"
+          point="org.eclipse.core.resources.builders">
+       <builder
+             callOnEmptyDelta="false"
+             hasNature="false">
+          <run class="org.eclipse.amp.amf.gen.ide.MetaABMBuilder"/>
+       </builder>
+    </extension>
+ <extension
+       id="modelproblem"
+       name="MetaABM Model Problem"
+       point="org.eclipse.core.resources.markers">
+    <super
+          type="org.eclipse.core.resources.problemmarker">
+    </super>
+    <persistent
+          value="true">
+    </persistent>
+    <attribute
+          name="modelElement">
+          </attribute>
+ </extension>
+ <extension point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="org.metaabm.metaABMFile">
+         <with
+               variable="selection">
+            <iterate
+                  ifEmpty="false">
+               <or>
+                  <and>
+                     <instanceof
+                           value="org.eclipse.core.resources.IFile">
+                     </instanceof>
+                     <test
+                           property="org.eclipse.core.resources.name"
+                           value="*.metaabm">
+                     </test>
+                  </and>
+               </or>
+            </iterate>
+         </with>
+      </definition>
+   </extension> 
+    <extension
+          point="org.eclipse.ui.commands">
+       <category
+             id="org.eclipse.amp.amf.gen.category"
+             name="Generate">
+       </category>
+       <command
+             categoryId="org.eclipse.amp.amf.gen.category"
+             id="org.eclipse.amp.amf.gen.interface"
+             name="Generate Interface">
+       </command>
+       <command
+             categoryId="org.eclipse.amp.amf.gen.category"
+             id="org.eclipse.amp.amf.gen.skeleton"
+             name="Generate Skeleton">
+       </command>
+       <command
+             categoryId="org.eclipse.amp.amf.gen.category"
+             id="org.eclipse.amp.amf.gen.doc"
+             name="Generate Documentation">
+       </command>
+    </extension> 
+    <extension
+          point="org.eclipse.ui.menus">
+       <menuContribution
+             locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+             <menu
+                   id="org.eclipse.amp.amf.ide.generateMenuID"
+                   label="Generate">
+             <command
+                   commandId="org.eclipse.amp.amf.gen.interface"
+                   icon="icons/full/obj16/int_obj.gif"
+                   id="GenerateInterface"
+                   label="Interfaces"
+                   style="push"
+                   tooltip="Generate interfaces for all model components.">
+                <visibleWhen
+                      checkEnabled="false">
+                   <reference
+                         definitionId="org.metaabm.metaABMFile">
+                   </reference>
+                </visibleWhen>
+             </command>
+             <command
+                   commandId="org.eclipse.amp.amf.gen.skeleton"
+                   icon="icons/full/obj16/class_obj.gif"
+                   id="GenerateSkeleton"
+                   label="Skeleton"
+                   style="push"
+                   tooltip="Generate a base implementation, including method support. (It usually makes more sense to use a builder.)">
+                <visibleWhen
+                      checkEnabled="false">
+                   <reference
+                         definitionId="org.metaabm.metaABMFile">
+                   </reference>
+                </visibleWhen>
+             </command>
+             <command
+                   commandId="org.eclipse.amp.amf.gen.doc"
+                   icon="icons/full/obj16/tag-html.gif"
+                   id="GenerateDoc"
+                   label="HTML Documentation"
+                   style="push"
+                   tooltip="Manually Generate HTML Documentation for the Model. (This is normally handled by a builder automatically.)">
+                <visibleWhen
+                      checkEnabled="false">
+                   <reference
+                         definitionId="org.metaabm.metaABMFile">
+                   </reference>
+                </visibleWhen>
+             </command>
+             </menu>
+       </menuContribution>
+    </extension> 
+    <extension
+          point="org.eclipse.ui.handlers">
+       <handler
+             class="org.eclipse.amp.amf.gen.ide.GenerateInterfaceHandler"
+             commandId="org.eclipse.amp.amf.gen.interface">
+       </handler>
+       <handler
+             class="org.eclipse.amp.amf.gen.ide.GenerateDocHandler"
+             commandId="org.eclipse.amp.amf.gen.doc">
+       </handler>
+       <handler
+             class="org.eclipse.amp.amf.gen.ide.GenerateSkeletonHandler"
+             commandId="org.eclipse.amp.amf.gen.skeleton">
+       </handler>
+    </extension>
+    <extension
+          point="org.eclipse.ui.preferencePages">
+       <page
+             class="org.eclipse.amp.amf.gen.ide.prefs.AMPPreferencePage"
+             id="org.eclipse.amp.amf.ide.preferences.MetaABMGenPreferencePage"
+             name="Agent Modeling">
+       </page>
+    </extension>
+    <extension
+          point="org.eclipse.core.runtime.preferences">
+       <initializer
+             class="org.eclipse.amp.amf.gen.ide.prefs.PreferenceInitializer">
+       </initializer>
+    </extension>
+  </plugin>

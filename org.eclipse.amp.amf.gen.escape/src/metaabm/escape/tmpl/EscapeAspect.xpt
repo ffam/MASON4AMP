@@ -1,0 +1,431 @@
+«IMPORT emf»
+«IMPORT metaabm»
+«IMPORT metaabm::act»
+«IMPORT metaabm::function»
+
+«EXTENSION metaabm::tmpl::types»
+«EXTENSION metaabm::tmpl::names» 
+«EXTENSION metaabm::tmpl::infer»
+«EXTENSION metaabm::tmpl::util»
+«EXTENSION metaabm::tmpl::projections»
+«EXTENSION metaabm::ascape::tmpl::namesascape»
+«EXTENSION metaabm::ascape::tmpl::inferascape»
+«EXTENSION metaabm::escape::tmpl::inferescape»
+
+«AROUND metaabm::tmpl::Java::Imports FOR SStyle-»
+import org.ascape.model.CellOccupant;
+import org.ascape.model.HostCell;
+import org.ascape.util.vis.ColorFeatureConcrete;
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Shape;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.amp.agf.gef.AgentEditPart;
+import org.eclipse.amp.escape.ascape.gef.HostCellEditPart;
+«ENDAROUND»
+
+«AROUND metaabm::tmpl::Java::Imports FOR SAgent-»
+	import java.util.ArrayList;
+	import java.util.List;
+	import java.util.Collections;
+	
+	import org.eclipse.core.runtime.IAdapterFactory;
+	import org.eclipse.amp.agf.IGraphicsAdapted;
+	import org.eclipse.amp.agf.IGraphicsAdapter;
+	
+	import org.eclipse.swt.graphics.Color;
+	import org.eclipse.jface.viewers.IColorProvider;
+	
+	import org.ascape.model.Agent;
+	import org.ascape.model.Cell;
+	import org.ascape.model.CellOccupant;
+	import org.ascape.model.HostCell;
+	import org.ascape.model.LocatedAgent;
+	import org.ascape.model.Scape;
+	import org.ascape.model.event.ScapeEvent;
+	import org.ascape.model.rule.Rule;
+	import org.ascape.model.rule.ExecuteThenUpdate;
+	import org.ascape.model.space.CollectionSpace;
+	import org.ascape.model.space.Coordinate;
+	import org.ascape.model.space.Coordinate2DDiscrete;
+	import org.ascape.model.space.Graph;
+	import org.ascape.model.space.Location;
+	import org.ascape.model.space.Singleton;
+	import org.ascape.runtime.NonGraphicRunner;
+	import org.ascape.util.Conditional;
+	import org.ascape.util.data.DataPoint; 
+	import org.ascape.util.data.DataPointConcrete;
+	import org.ascape.util.vis.ColorFeature;
+	import org.ascape.util.vis.ColorFeatureConcrete;
+	import org.ascape.view.vis.ChartView;
+	import org.ascape.view.vis.GEFView;
+	import org.ascape.view.vis.GraphView;
+	
+	import org.eclipse.amp.escape.runtime.extension.IAgentChild;
+	import org.eclipse.amp.escape.runtime.extension.IAgentChildProvider;
+	
+	«targetDef.proceed()»
+«ENDAROUND»
+
+«AROUND metaabm::tmpl::Java::ExtendType FOR SProjection-»Scape«ENDAROUND»
+«AROUND metaabm::tmpl::Java::ExtendType FOR SContext-»«typeName()-»«ENDAROUND»
+«AROUND metaabm::tmpl::Java::ExtendType FOR SAgent-»Scape«ENDAROUND»
+
+«AROUND metaabm::tmpl::Java::ClassInheiritance FOR SContext-» extends Scape implements IGraphicsAdapted, IAgentChildProvider«ENDAROUND»
+«AROUND metaabm::tmpl::Java::ClassInheiritance FOR SAgent-» extends «extendType()» implements IAgentChildProvider«ENDAROUND»
+«AROUND metaabm::tmpl::Java::ClassInheiritance FOR SStyle-» implements «(agent.isHost() ? "HostCell" : "Agent")»EditPart«ENDAROUND»
+
+«AROUND metaabm::tmpl::Java::Files FOR SAgent-»
+	«EXPAND metaabm::tmpl::Java::ClassFile-»
+    «EXPAND metaabm::tmpl::Java::ClassFile FOREACH attributes.typeSelect(SState)-»
+«ENDAROUND»
+
+«AROUND metaabm::tmpl::Java::Body FOR SAgent-»
+	«targetDef.proceed()-»
+	«EXPAND metaabm::ascape::tmpl::ScapeAspect::AgentBody-»
+	«EXPAND StartSimulationAgentChild»
+	«EXPAND CalculateTimeStep»
+«ENDAROUND»
+
+«AROUND metaabm::tmpl::Java::Body FOR SContext-»
+
+    «EXPAND metaabm::ascape::tmpl::ScapeAspect::ScapeBody-»
+    
+    «EXPAND CreateGraphicsMethods-»
+
+	«EXPAND metaabm::tmpl::Java::GenerateComment»
+	public IGraphicsAdapter getGraphicsAdapter() {
+        return «typeName()»GraphicsAdapter.getDefault();
+	}
+	«EXPAND metaabm::tmpl::Java::GenerateComment»
+    private Color getInferredChartColor(Object agent,
+        IColorProvider colorProvider) {
+        Color color = colorProvider.getForeground(agent);
+		if (color == ColorFeature.BLACK) {
+			color = ColorFeatureConcrete
+					.createHSB((float) java.lang.Math.random() * 360f, 1.0f,
+							0.8f);
+		}
+        return color;
+    }
+    «EXPAND metaabm::tmpl::Java::GenerateComment»
+    public static void main(String[] args) {
+        (new NonGraphicRunner()).openInstance("«implementation.qualifiedName»");
+    }
+
+    «EXPAND ExecIAgentChild»
+	public void createExtensions(Object object) {
+		if (object instanceof IAgentChildProvider) {
+			for (IAgentChild tmp : ((IAgentChildProvider) object).getChildren()) {
+					tmp.addDataCollectors(this);
+			}
+		}
+	}
+«ENDAROUND»
+
+«DEFINE ExecIAgentChild FOR SContext»
+	«EXPAND metaabm::tmpl::Java::MethodComment»
+	@Override
+	public void executeOnMembers(){
+		int timeStep = getRunner().getPeriod();
+		startSimulationAgentChild(timeStep);
+		«FOREACH agents AS agent»
+			«IF !agent.isHost()»
+				//A normal movable agent
+				((«agent.implementation.className»)«agent.scape()».getPrototypeAgent()).startSimulationAgentChild(timeStep);
+			«ELSE»
+				//this is an agent that represent a cell and cannot move.
+				«EXPAND HostAgentStart(agent.implementation.className) FOR rootActivity»
+			«ENDIF»
+		«ENDFOREACH»
+		super.executeOnMembers();
+		calculateTimeStep(timeStep);
+		«FOREACH agents AS agent»
+			«IF !agent.isHost()»
+				//A normal movable agent
+				((«agent.implementation.className»)«agent.scape()».getPrototypeAgent()).calculateTimeStep(timeStep);
+			«ELSE»
+				//this is an agent that represent a cell and cannot move.
+				«EXPAND HostAgentCalc(agent.implementation.className) FOR rootActivity»
+			«ENDIF»
+		«ENDFOREACH»
+	}
+«ENDDEFINE»
+
+«REM» START; check is hostCell and set the start time on the IAgentChild (traverse the three to the ABuildGrid)«ENDREM»
+«DEFINE HostAgentStart(String typeName) FOR IAct»
+«ENDDEFINE»
+
+«DEFINE HostAgentStart(String typeName) FOR AGroup»
+	«EXPAND HostAgentStart(typeName) FOREACH roots»
+«ENDDEFINE»
+
+«DEFINE HostAgentStart(String typeName) FOR ABuild»
+	«EXPAND HostAgentStart(typeName) FOREACH targets»
+«ENDDEFINE»
+
+«DEFINE HostAgentStart(String typeName) FOR ABuildGrid»
+	((«typeName») «this.projection.fieldName()».getPrototypeAgent()).startSimulationAgentChild(timeStep);
+«ENDDEFINE»
+«REM»END set start time «ENDREM»
+
+«REM» START; check is hostCell and start the calculation on the IAgentChild (traverse the three to the ABuildGrid)«ENDREM»
+«DEFINE HostAgentCalc(String typeName) FOR IAct»
+«ENDDEFINE»
+
+«DEFINE HostAgentCalc(String typeName) FOR AGroup»
+	«EXPAND HostAgentCalc(typeName) FOREACH roots»
+«ENDDEFINE»
+
+«DEFINE HostAgentCalc(String typeName) FOR ABuild»
+	«EXPAND HostAgentCalc(typeName) FOREACH targets»
+«ENDDEFINE»
+
+«DEFINE HostAgentCalc(String typeName) FOR ABuildGrid»
+	((«typeName») «this.projection.fieldName()».getPrototypeAgent()).calculateTimeStep(timeStep);
+«ENDDEFINE»
+«REM»END calculate «ENDREM»
+
+
+«DEFINE StartSimulationAgentChild FOR SAgent»
+	«EXPAND metaabm::tmpl::Java::MethodComment»
+	public void startSimulationAgentChild(int timeStep){
+		if(timeStep == getRoot().getRunner().getEarliestPeriod()){
+			for(IAgentChild tmp:children){
+				tmp.startSimulation(timeStep);
+			}
+		}	
+	}
+«ENDDEFINE»
+
+«DEFINE CalculateTimeStep FOR SAgent»
+	«EXPAND metaabm::tmpl::Java::MethodComment»
+	public void calculateTimeStep(int timeStep){
+		for(IAgentChild tmp:children){
+			tmp.calculate(timeStep);
+		}
+	}
+«ENDDEFINE»
+
+«DEFINE CreateGraphicsMethods FOR SContext»
+    «EXPAND metaabm::tmpl::Java::GenerateComment»
+	protected void createChartViews() {
+		ChartView chart = new ChartView();
+		«EXPAND BuildChartSelection FOREACH agents-»
+	    addView(chart);
+	}
+
+    «EXPAND metaabm::tmpl::Java::GenerateComment»
+	protected void create2DViews() {
+		addView(new GEFView());
+	}
+
+    «EXPAND metaabm::tmpl::Java::GenerateComment»
+	protected void createGraphViews() {
+    	«FOREACH acts().typeSelect(ABuildNetwork) AS graphBuilder-»
+			«graphBuilder.projection.fieldName()».addView(new GraphView());
+    	«ENDFOREACH-» 
+    }
+«ENDDEFINE»
+
+«AROUND metaabm::ascape::tmpl::ScapeAspect::ViewBuilder FOR AGroup-»
+	«IF reference.parent == null-»
+	createChartViews();
+    «ENDIF-»
+    «IF reference.metaType == SContext && !((SContext) reference).projections.typeSelect(SNDimensional).isEmpty-»
+	create2DViews();
+	«ENDIF-»
+    «IF reference.metaType == SContext && !((SContext) reference).projections.typeSelect(SNetwork).isEmpty»
+	createGraphViews();
+	«ENDIF-»
+    «targetDef.proceed()-»
+«ENDAROUND»
+
+«DEFINE BuildChartSelection FOR SAgent»
+    «IF !styles.isEmpty-»
+    final «owner.typeName()» «id()»Scape = new «owner.typeName()»();
+    «id()»Scape.setRunner(new NonGraphicRunner());
+	«typeName()» «id()» = new «typeName()»() {
+            public void requestUpdate() {
+            }
+            public «owner.typeName()» get«owner.typeName()»() {
+            	return «id()»Scape;
+            }
+        };
+    «id()»Scape.add(«id()»);
+	«IF !isHost() && isDiscrete()-»
+	HostCell «id()»Host = new HostCell() {
+            public void requestUpdate() {
+            }
+        };
+	«id()»Host.setOccupant((CellOccupant) «id()»);
+	«ENDIF-»
+    «FOREACH styles AS style»
+    IColorProvider «style.id()»ColorProvider = new «styles.get(0).typeName()»ColorProvider();
+	«FOREACH style.setterSpace() AS setter»
+    «((List) setter).last()»;
+	chart.addSeries("Count «typeName()» «((List) setter).first()»", getInferredChartColor(«id()», «style.id()»ColorProvider));
+    «ENDFOREACH-»
+    «ENDFOREACH-»
+    «ENDIF-»
+«ENDDEFINE»
+
+«AROUND metaabm::tmpl::Java::FunctionInnerBlock (List[metaabm::act::AAct] path, Boolean inner) FOR ASink-»
+    «IF function.id() == "randomUnit"-»
+        getRandom().nextDouble()
+    «ELSEIF function.id() == "randomIs"-»
+        getRandom().nextBoolean()
+    «ELSEIF function.id() == "uniformDistribution"-»
+        randomInRange(«inputs.expression(path, inner).toString(", ")»);
+    «ELSEIF function.id() == "timeNow"-»
+		«path.last().accessPath(this, inner)»«reference.owner != null ? "getScape()." : ""»getPeriod()
+    «ELSEIF function.id() == "available"-»
+        isAvailable()
+    «ELSEIF function.id() == "withinBoundaries"-»
+        «expressionSink(path, function, inner)»
+    «ELSEIF function.id() == "colorRGB"-»
+        ColorFeatureConcrete.create((int) («inputs.expression(path, inner).toString(" * 255), (int) (")» * 255))
+    «ELSEIF function.id().startsWith("color")-»
+        ColorConstants.«function.id().replaceFirst("color","").toFirstLower()»
+	«ELSE-»
+		«targetDef.proceed()-»
+	«ENDIF-»
+«ENDAROUND»
+
+«DEFINE StyleProvider FOR SAgent»
+    «IF styles.size > 0-»
+	        if (model instanceof «implementation.className») {
+	            return new «styles.get(0).implementation.qualifiedName»();
+	        }
+    «ENDIF-»
+«ENDDEFINE»
+«DEFINE RecurseAgentProviders FOR SAgent»
+	«EXPAND StyleProvider»
+«ENDDEFINE»
+«DEFINE RecurseAgentProviders FOR SContext»
+	«EXPAND StyleProvider»
+	«EXPAND RecurseAgentProviders FOREACH agents»
+«ENDDEFINE»
+
+«AROUND metaabm::tmpl::Java::Extension FOR SAgent-»
+	«EXPAND metaabm::tmpl::Java::GenerateComment»
+	private List<IAgentChild> children;
+	«EXPAND metaabm::tmpl::Java::GenerateComment»
+	public List<IAgentChild> getChildren(){
+		return children;
+	}
+«ENDAROUND»
+
+«DEFINE ConstructorAgentChildren FOR SAgent»
+	children = new ArrayList<IAgentChild>();
+	«FOREACH children AS child»
+		children.add(new «child.getName()»());
+	«ENDFOREACH»
+«ENDDEFINE»
+
+«AROUND metaabm::tmpl::Java::ConstructorBody FOR SAgent-»
+	«targetDef.proceed()-»
+	«EXPAND ConstructorAgentChildren»
+«ENDAROUND»
+
+«AROUND metaabm::tmpl::Java::ConstructorBody FOR SContext-»
+	«targetDef.proceed()-»
+	«EXPAND ConstructorAgentChildren»
+«ENDAROUND»
+
+«AROUND metaabm::tmpl::Java::ExtendType FOR ASink-»
+	«IF function.color()-»Color
+	«ELSEIF function.shape()-»Shape
+	«ELSEIF function.id().startsWith("graphic")-»Shape
+	«ELSEIF function.id() == "randomState"-»«inputs.get(0).value.typeName()»
+	«ELSE-»«typeName()»«ENDIF-»
+«ENDAROUND»
+
+«DEFINE StyleSelector (SProjection projection) FOR SProjection-»
+«ENDDEFINE»
+
+«AROUND metaabm::tmpl::Java::OtherAccessors FOR SAgent-»
+	«targetDef.proceed()-»
+    «EXPAND metaabm::ascape::tmpl::ScapeAspect::NameAccessor-»
+«ENDAROUND»
+
+«AROUND metaabm::tmpl::Java::Builder FOR SAgent-»
+	«IF (rootActivity != null)-»
+		«EXPAND metaabm::ascape::tmpl::ScapeAspect::ChildBuilder FOR rootActivity-»
+	«ENDIF-»
+«ENDAROUND»
+
+«AROUND metaabm::tmpl::Java::MethodPotential (metaabm::act::AAct within) FOR FFunction-»
+	«IF (id() == "withinBoundaries") || (id() == "distance")-»
+		«EXPAND metaabm::tmpl::Java::Method-»
+	«ELSE-»
+		«targetDef.proceed()-»
+	«ENDIF-»
+«ENDAROUND»
+
+«AROUND metaabm::tmpl::Java::MethodPotential (metaabm::act::AAct within) FOR AQuery-»
+	«IF (function.id() == "minimize") || (function.id() == "maximize")-»
+    /**
+     * <!-- begin-user-doc -->
+     * A data point used within a search to find the «selected.agent.label» with the «function.id()»d «inputs.value.get(0).label» value.
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public final static DataPoint «dataPoint()» = new DataPointConcrete("«function.id().toFirstUpper()» «inputs.value.get(0).id()»") {
+        private static final long serialVersionUID = 3L;
+        public double getValue(Object o) {
+            «EXPAND metaabm::tmpl::Java::InnerEvaluation(allSources.select(e|e.selected == this.selected), false)-»
+            return ((«selected.agent.typeName()») o).«inputs.value.get(0).getterName()»();
+        }
+    };
+	«ELSE-»
+		«targetDef.proceed()-»
+	«ENDIF-»
+«ENDAROUND»
+
+«AROUND metaabm::tmpl::Java::ActionBody FOR FFunction-»
+	«IF id() == "withinBoundaries"-»
+        Coordinate2DDiscrete coor = (Coordinate2DDiscrete) getCoordinate();
+        return (coor.getYValue() >= bounds[0]
+                && coor.getXValue() >= bounds[1]
+                && coor.getYValue() <= bounds[2]
+                && coor.getXValue() <= bounds[3]);
+    «ELSE-»«targetDef.proceed()»«ENDIF-»
+«ENDAROUND»
+
+«AROUND metaabm::tmpl::Java::ConditionBlock (List[metaabm::act::AAct] path, Boolean inner) FOR AAct-»
+	«EXPAND metaabm::ascape::tmpl::ScapeAspect::Conditional(path, inner)-»
+«ENDAROUND»
+
+«AROUND metaabm::tmpl::Java::BeginQueryBlock (List[metaabm::act::AAct] path, Boolean inner) FOR AAct-»
+	«EXPAND metaabm::ascape::tmpl::ScapeAspect::BeginQuery(path, inner)-»
+«ENDAROUND»
+«AROUND metaabm::tmpl::Java::EndQueryBlock (List[metaabm::act::AAct] path, Boolean inner) FOR AAct-»
+	«EXPAND metaabm::ascape::tmpl::ScapeAspect::EndQuery(path, inner)-»
+«ENDAROUND»
+
+«AROUND metaabm::tmpl::Java::BeginSerialBlock(List[AAct] path, Boolean inner) FOR AControl-»
+	«EXPAND metaabm::ascape::tmpl::ScapeAspect::BeginSerial(path, inner)-»
+    «targetDef.proceed()-»
+«ENDAROUND»
+«AROUND metaabm::tmpl::Java::EndSerialBlock(List[AAct] path, Boolean inner) FOR AControl-»
+	«EXPAND metaabm::ascape::tmpl::ScapeAspect::EndSerial(path, inner)-»
+    «targetDef.proceed()-»
+«ENDAROUND»
+
+«AROUND metaabm::tmpl::Java::InnerBlock (List[metaabm::act::AAct] path, Boolean inner) FOR AMove-»
+	«EXPAND metaabm::ascape::tmpl::ScapeAspect::InnerBlockCall(path, inner)-»«ENDAROUND»
+«AROUND metaabm::tmpl::Java::InnerBlock (List[metaabm::act::AAct] path, Boolean inner) FOR ACreateAgents-»
+	«call(path, inner)»«ENDAROUND»
+«AROUND metaabm::tmpl::Java::InnerBlock (List[metaabm::act::AAct] path, Boolean inner) FOR ADie-»
+	«call(path, inner)»«ENDAROUND»
+«AROUND metaabm::tmpl::Java::InnerBlock (List[metaabm::act::AAct] path, Boolean inner) FOR ALeave-»
+	«call(path, inner)»«ENDAROUND»
+
+«AROUND metaabm::tmpl::Java::InnerBlock (List[metaabm::act::AAct] path, Boolean inner) FOR AReplace-»
+	«call(path, inner)»«ENDAROUND»
+«AROUND metaabm::tmpl::Java::InnerBlock (List[metaabm::act::AAct] path, Boolean inner) FOR AConnect-»
+	«call(path, inner)»«ENDAROUND»
+«AROUND metaabm::tmpl::Java::InnerBlock (List[metaabm::act::AAct] path, Boolean inner) FOR ADisconnect»
+	«call(path, inner)»«ENDAROUND»

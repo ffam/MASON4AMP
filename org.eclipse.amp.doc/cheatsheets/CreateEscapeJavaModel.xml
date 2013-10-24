@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet
+      title="Create an Escape Java Model">
+   <intro>
+      <description>
+         This cheat sheet walks you through creating a new Java-based Escape model.
+      </description>
+   </intro>
+   <item title="Create your Scape class" dialog="true" skip="false" href="/org.eclipse.jdt.doc.user/gettingStarted/qs-9.htm">
+      <description>
+         The next step is to create the actual model class. In the main toolbar again, click on the <b>New Java Class</b> button (or the link below). If not already specified, select your project&apos;s <b>src</b> directory as the source folder. Enter <b>CoordinationGame</b> for the class name, &quot;ede.brook.model&quot; as the package name, and select the checkbox to create the <b>main()</b> method, then click <b>Finish</b>.<br/>
+<br/>
+The Java editor will automatically open showing your new class.
+      </description>
+      <command serialization="org.eclipse.ui.newWizard(newWizardId=org.eclipse.jdt.ui.wizards.NewClassCreationWizard)" required="false" translate="">
+      </command>
+   </item>
+   <item
+         title="Copy the Coordination Game code.">
+      <description>
+         To implement the model, we&apos;ll just copy the code from the Ascape manual. If you don&apos;t have the Ascape documentation installed you can find the code at: http://ascape.sourceforge.net/manual/Appendix.html#1.
+      </description>
+      <command
+            required="false"
+            serialization="org.eclipse.ui.help.displayHelp(href=/org.ascape.doc/Content/manual/AppendixII.html?path%=#1.1)"/>
+   </item>
+   <item title="Create your Agent class" dialog="true" skip="false" href="/org.eclipse.jdt.doc.user/gettingStarted/qs-9.htm">
+      <description>
+         Next, do the same for the CoordinationGamePlayer class.
+      </description>
+      <command serialization="org.eclipse.ui.newWizard(newWizardId=org.eclipse.jdt.ui.wizards.NewClassCreationWizard)" required="false" translate="">
+      </command>
+   </item>
+   <item
+         title="Copy the Coordination Player code.">
+      <description>
+         <b>Body</b>
+      </description>
+   </item>
+</cheatsheet>

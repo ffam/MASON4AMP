@@ -1,0 +1,121 @@
+«IMPORT emf»
+«IMPORT metaabm»
+«IMPORT metaabm::act»
+«IMPORT metaabm::function»
+
+«EXTENSION metaabm::tmpl::types»
+«EXTENSION metaabm::tmpl::names» 
+«EXTENSION metaabm::tmpl::infer»
+«EXTENSION metaabm::tmpl::util»
+«EXTENSION metaabm::tmpl::projections»
+«EXTENSION metaabm::ascape::tmpl::namesascape»
+«EXTENSION metaabm::ascape::tmpl::inferascape»
+
+«AROUND metaabm::tmpl::Java::Imports FOR SAgent-»
+import org.eclipse.amp.agf.IGraphicsAdapter;
+import org.eclipse.amp.agf.GraphicsAdapter;
+import org.eclipse.amp.agf.gef.IFigureProvider;
+import org.eclipse.core.runtime.IAdapterFactory;
+
+import org.eclipse.amp.agf.gef.IFigureProvider;
+import org.eclipse.jface.viewers.IColorProvider;
+import org.eclipse.jface.viewers.ILabelProvider;
+«ENDAROUND»
+
+«AROUND metaabm::tmpl::Java::ClassFile FOR IID-»
+«IF metaType == SContext-»
+«IF generate()-»
+    «FILE javaFileLoc().replaceFirst(".java", "GraphicsAdapter.java")-»
+    «EXPAND metaabm::tmpl::Java::ClassText»
+    «ENDFILE-»
+«ENDIF-»
+«ENDIF-»
+«ENDAROUND»
+
+«AROUND metaabm::tmpl::Java::ClassName FOR IID-»«typeName()»GraphicsAdapter«ENDAROUND»
+
+«AROUND metaabm::tmpl::Java::ClassInheiritance FOR SContext-» extends GraphicsAdapter«ENDAROUND»
+
+«AROUND ClassComments FOR IID-»
+ * «label» Adapter for Graphics. Override to specialize.
+«ENDAROUND»
+
+«DEFINE ProviderInstance(String providerType) FOR SAgent-»
+	I«providerType»Provider[] «id()»«providerType»Providers = new I«providerType»Provider[]{«FOREACH styles AS style-»«style.typeName()»«providerType»Provider.getDefault()«ENDFOREACH»};
+«ENDDEFINE»
+«DEFINE RecurseProviderInstance(String providerType) FOR SAgent-»
+	«EXPAND ProviderInstance(providerType)-»
+«ENDDEFINE»
+«DEFINE RecurseProviderInstance(String providerType) FOR SContext-»
+	«EXPAND ProviderInstance(providerType)-»
+	«EXPAND RecurseProviderInstance(providerType) FOREACH agents-»
+«ENDDEFINE»
+«DEFINE RecurseProviderInstance(String providerType) FOR IID-»«ENDDEFINE»
+
+«DEFINE ProviderMethod(String providerType) FOR SAgent-»
+        if (type == «typeName()».class) {
+            return «id()»«providerType»Providers;
+        }
+«ENDDEFINE»
+«DEFINE RecurseProviderMethod(String providerType) FOR SAgent-»
+	«EXPAND ProviderMethod(providerType)-»
+«ENDDEFINE»
+«DEFINE RecurseProviderMethod(String providerType) FOR SContext-»
+	«EXPAND ProviderMethod(providerType)-»
+	«EXPAND RecurseProviderMethod(providerType) FOREACH agents-»
+«ENDDEFINE»
+«DEFINE RecurseProviderMethod(String providerType) FOR IID-»«ENDDEFINE»
+
+«AROUND metaabm::tmpl::Java::ClassImplementation FOR IID-»
+	«EXPAND metaabm::tmpl::Java::GenerateComment»
+    private static IGraphicsAdapter singleton;
+    
+	«EXPAND RecurseProviderInstance("Color")»
+    
+	«EXPAND RecurseProviderInstance("Figure")»
+ 
+    /**
+     * <!-- begin-user-doc -->
+     * @param type
+     * @return
+     * @see org.eclipse.amp.agf.IGraphicsAdapter#getColorsForClass(java.lang.Class)
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public IColorProvider[] getColorsForClass(Class type) {
+    	«EXPAND RecurseProviderMethod("Color")-»
+        return null;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * @param type
+     * @return
+     * @see org.eclipse.amp.agf.IGraphicsAdapter#getFiguresForClass(java.lang.Class)
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public IFigureProvider[] getFiguresForClass(Class type) {
+    	«EXPAND RecurseProviderMethod("Figure")-»
+        return null;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * @param type
+     * @return
+     * @see org.eclipse.amp.agf.IGraphicsAdapter#getLabelsForClass(java.lang.Class)
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public ILabelProvider[] getLabelsForClass(Class type) {
+    	return null;
+    }
+    «EXPAND metaabm::tmpl::Java::GenerateComment»
+    public static IGraphicsAdapter getDefault() {
+        if (singleton == null) {
+            singleton = new «typeName()»GraphicsAdapter();
+        }
+        return singleton;
+    }
+«ENDAROUND»

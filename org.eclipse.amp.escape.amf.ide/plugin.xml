@@ -1,0 +1,593 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id: plugin.xml,v 1.19 2010/08/04 18:16:45 mparker Exp $
+-->
+
+<plugin>
+<!--   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            id="org.eclipse.amp.escape.launching.ui.EscapeLaunchConfigType"
+            modes="run, debug"
+            name="Escape MetaABM Model"
+            delegate="org.eclipse.jdt.launching.JavaLaunchDelegate"/>
+   </extension>
+   
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="org.eclipse.amp.escape.amf.ide.EscapeLaunchConfigTabGroup"
+            id="org.eclipse.amp.escape.launching.ui.EscapeLaunchConfigTabGroup"
+            type="org.eclipse.amp.escape.launching.ui.EscapeLaunchConfigType"/>
+   </extension>
+
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="org.eclipse.amp.escape.launching.ui.EscapeLaunchConfigType"
+            icon="icons/etool16/Escape.gif"
+            id="org.eclipse.amp.escape.launching.ui.EscapeLaunchConfigTypeImage"/>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            label="Escape MetaABM Model"
+            icon="icons/etool16/MetaPerspective.gif"
+            category="org.eclipse.ui.externaltools"
+            class="org.eclipse.amp.escape.amf.ide.EscapeLaunchAction"
+            modes="run, debug"
+            id="org.eclipse.amp.escape.launching.ui.EscapeShortcut">
+        <contextualLaunch>
+           <enablement>
+             <with variable="selection">
+               <count value="1"/>
+               <iterate>
+                 <test property="org.eclipse.debug.ui.matchesPattern" value="*.metaabm"/>
+               </iterate>
+             </with>
+           </enablement>
+           <contextLabel
+         	  mode="run"
+         	  label="Escape Model"/>
+          <contextLabel
+         	  mode="debug"
+         	  label="Escape Model"/>
+  		 </contextualLaunch>
+      </shortcut>
+   </extension>-->
+       <extension point="org.eclipse.ui.newWizards">
+    <category
+          id="org.eclipse.amp.amf.ide.wizards"
+          name="Agent Modeling">
+    </category>
+    <wizard
+          category="org.eclipse.amp.amf.ide.wizards"
+          class="org.eclipse.amp.escape.ide.BasicProjectWizard"
+          icon="icons/AMFProject.gif"
+          id="org.eclipse.amp.amf.gen.ide.wizards.newBaseProject"
+          name="Agent Modeling Basic Project"
+          project="true">
+       <description>
+          Creates a new project for MetaABM. Does not support any targets, e.g. it does not generate Repast or Ascape Java code, but it does allow full model editing and generation of common interfaces and test cases and so may be useful for DIY ABM projects.
+       </description>
+    </wizard>
+   </extension>
+    <extension
+          point="org.eclipse.ui.commands">
+       <command
+             categoryId="org.eclipse.amp.axf.ui"
+             id="org.eclipse.amp.escape.runtime.executeAMF"
+             name="Execute">
+       </command>
+       <command
+             categoryId="org.eclipse.amp.axf.ui"
+             id="org.eclipse.amp.escape.runtime.executeAMF3D"
+             name="Execute 3D">
+       </command>
+       <command
+             categoryId="org.eclipse.amp.axf.ui"
+             id="org.eclipse.amp.escape.runtime.executeAMFHeadless"
+             name="Execute Headless">
+       </command>
+		<command categoryId="org.eclipse.amp.axf.ui"
+			id="org.eclipse.amp.escape.runtime.executeParam" name="Execute">
+		</command>
+		<command categoryId="org.eclipse.amp.axf.ui"
+			id="org.eclipse.amp.escape.runtime.executeParamHeadless" name="Execute Headless">
+		</command>
+       <command
+             categoryId="org.eclipse.amp.amf.gen.category"
+             id="org.eclipse.amp.amf.gen.escape"
+             name="Generate Escape Model">
+       </command>
+       <command
+             categoryId="org.eclipse.amp.amf.gen.category"
+             id="org.eclipse.amp.amf.gen.escape.3D"
+             name="Generate Escape 3D Graphics">
+       </command>
+       <command
+             categoryId="org.eclipse.amp.axf.ui"
+             id="org.eclipse.amp.escape.runtime.executeParamEMFHeadless"
+             name="Execute Data">
+       </command>
+       <command
+             categoryId="org.eclipse.amp.axf.ui"
+             id="org.eclipse.amp.escape.runtime.executeAMFEMFHeadless"
+             name="Execute Data">
+       </command>
+       <command
+             categoryId="org.eclipse.amp.axf.ui"
+             id="org.eclipse.amp.escape.runtime.executeJavaEMFHeadless"
+             name="Execute Data">
+       </command>
+    </extension>
+    <extension
+          point="org.eclipse.ui.menus">
+       <menuContribution
+             locationURI="popup:org.eclipse.amp.amf.ide.generateMenuID">
+          <command
+                commandId="org.eclipse.amp.amf.gen.escape"
+                icon="icons/etool16/escape16.png"
+                label="Escape"
+                style="push"
+                tooltip="Manually generate Escape implementation. (It usually makes more sense to use a builder.)">
+             <visibleWhen
+                   checkEnabled="false">
+                <reference
+                      definitionId="org.metaabm.metaABMFile">
+                </reference>
+             </visibleWhen>
+          </command>
+       </menuContribution>
+		<menuContribution
+			locationURI="toolbar:org.eclipse.amp.escape.ide.launch?after=additions">
+			<command commandId="org.eclipse.amp.escape.runtime.executeAMF"
+				icon="icons/etool16/execute.gif" label="Execute" style="push"
+				tooltip="Execute Escape AMF model.">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="org.eclipse.amp.escape.amf.allowexecute">
+					</reference>
+				</visibleWhen>
+			</command>
+			<command commandId="org.eclipse.amp.escape.runtime.executeAMF3D"
+				icon="icons/etool16/execute.gif" label="Execute 3D" style="push"
+				tooltip="Execute Escape AMF model with 3D visualization.">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="org.eclipse.amp.escape.amf.allowexecute">
+					</reference>
+				</visibleWhen>
+			</command>
+			<command commandId="org.eclipse.amp.escape.runtime.executeAMFHeadless"
+				icon="icons/etool16/execute_headless.gif" label="Execute Headless" style="push"
+				tooltip="Execute Escape AMF model without views.">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="org.eclipse.amp.escape.amf.allowexecute">
+					</reference>
+				</visibleWhen>
+			</command>
+			<command commandId="org.eclipse.amp.escape.runtime.executeParam"
+				icon="icons/etool16/execute_param.gif" label="Execute" style="push"
+				tooltip="Execute Escape model from parameters.">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="org.eclipse.amp.escape.allowexecuteParam">
+					</reference>
+				</visibleWhen>
+			</command>
+			<command commandId="org.eclipse.amp.escape.runtime.executeParamHeadless"
+				icon="icons/etool16/execute_param_headless.gif" label="Execute Headless" style="push"
+				tooltip="Execute Escape model from parameters without views.">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="org.eclipse.amp.escape.allowexecuteParam">
+					</reference>
+				</visibleWhen>
+			</command>
+   <command
+         commandId="org.eclipse.amp.escape.runtime.executeParamEMFHeadless"
+         icon="icons/etool16/execute_headless_emf.gif"
+         label="Execute Headless"
+         style="push"
+         tooltip="Execute Escape AMF model with data collection.">
+      <visibleWhen
+            checkEnabled="false">
+         <reference
+               definitionId="org.eclipse.amp.escape.allowexecuteParam">
+         </reference>
+      </visibleWhen>
+   </command>
+   <command
+         commandId="org.eclipse.amp.escape.runtime.executeAMFEMFHeadless"
+         icon="icons/etool16/execute_headless_emf.gif"
+         label="Execute Headless"
+         style="push"
+         tooltip="Execute Escape AMF model with data collection.">
+      <visibleWhen
+            checkEnabled="false">
+         <reference
+               definitionId="org.eclipse.amp.escape.amf.allowexecute">
+         </reference>
+      </visibleWhen>
+   </command>
+   <command
+         commandId="org.eclipse.amp.escape.runtime.executeJavaEMFHeadless"
+         icon="icons/etool16/execute_headless_emf.gif"
+         label="Execute Headless"
+         style="push"
+         tooltip="Execute Escape AMF model with data collection.">
+      <visibleWhen
+            checkEnabled="false">
+         <reference
+               definitionId="org.eclipse.amp.escape.allowexecute">
+         </reference>
+      </visibleWhen>
+   </command>
+		</menuContribution>
+		<menuContribution locationURI="popup:org.eclipse.ui.popup.any">
+			<command
+         commandId="org.eclipse.amp.escape.runtime.executeAMF"
+         icon="icons/etool16/execute.gif"
+         label="Execute"
+         style="push"
+         tooltip="Execute Escape AMF model.">
+				<visibleWhen checkEnabled="true">
+				</visibleWhen>
+			</command>
+			<command
+         commandId="org.eclipse.amp.escape.runtime.executeAMF3D"
+         icon="icons/etool16/execute.gif"
+         label="Execute 3D"
+         style="push"
+         tooltip="Execute Escape AMF model with 3D visualization.">
+				<visibleWhen checkEnabled="true">
+				</visibleWhen>
+			</command>
+			<command
+         commandId="org.eclipse.amp.escape.runtime.executeAMFHeadless"
+         icon="icons/etool16/execute_headless.gif"
+         label="Execute Headless"
+         style="push"
+         tooltip="Execute Escape AMF model without views.">
+				<visibleWhen checkEnabled="true">
+				</visibleWhen>
+			</command>
+   <command
+         commandId="org.eclipse.amp.escape.runtime.executeParam"
+         icon="icons/etool16/execute_param.gif"
+         label="Execute"
+         style="push"
+         tooltip="Execute Escape model from parameters.">
+      <visibleWhen
+            checkEnabled="true">
+      </visibleWhen>
+   </command>
+   <command
+         commandId="org.eclipse.amp.escape.runtime.executeParamHeadless"
+         icon="icons/etool16/execute_param_headless.gif"
+         label="Execute Headless"
+         style="push"
+         tooltip="Execute Escape model from parameters without views.">
+      <visibleWhen
+            checkEnabled="true">
+      </visibleWhen>
+   </command>
+   <command
+         commandId="org.eclipse.amp.escape.runtime.executeParamEMFHeadless"
+         icon="icons/etool16/execute_headless_emf.gif"
+         label="Execute Headless"
+         style="push"
+         tooltip="Execute parameter model with with data collection.">
+      <visibleWhen
+            checkEnabled="true">
+      </visibleWhen>
+   </command>
+   <command
+         commandId="org.eclipse.amp.escape.runtime.executeAMFEMFHeadless"
+         icon="icons/etool16/execute_headless_emf.gif"
+         label="Execute Headless"
+         style="push"
+         tooltip="Execute AMF model with with data collection.">
+      <visibleWhen
+            checkEnabled="true">
+      </visibleWhen>
+   </command>
+   <command
+         commandId="org.eclipse.amp.escape.runtime.executeJavaEMFHeadless"
+         icon="icons/etool16/execute_headless_emf.gif"
+         label="Execute Headless"
+         style="push"
+         tooltip="Execute Java (Escape) model with data collection.">
+      <visibleWhen
+            checkEnabled="true">
+      </visibleWhen>
+   </command>
+		</menuContribution>
+		<menuContribution locationURI="menu:org.eclipse.amp.axf.ui.menu?after=additions">
+			<command commandId="org.eclipse.amp.escape.runtime.executeAMF"
+				icon="icons/etool16/execute.gif" label="Execute" style="push"
+				tooltip="Execute Escape AMF model.">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="org.eclipse.amp.escape.amf.allowexecute">
+					</reference>
+				</visibleWhen>
+			</command>
+			<command commandId="org.eclipse.amp.escape.runtime.executeAMF3D"
+				icon="icons/etool16/execute.gif" label="Execute 3D" style="push"
+				tooltip="Execute Escape AMF model with 3D visualization.">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="org.eclipse.amp.escape.amf.allowexecute">
+					</reference>
+				</visibleWhen>
+			</command>
+			<command commandId="org.eclipse.amp.escape.runtime.executeAMFHeadless"
+				icon="icons/etool16/execute_headless.gif" label="Execute Headless" style="push"
+				tooltip="Execute Escape AMF model without views.">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="org.eclipse.amp.escape.amf.allowexecute">
+					</reference>
+				</visibleWhen>
+			</command>
+			<command commandId="org.eclipse.amp.escape.runtime.executeParam"
+				icon="icons/etool16/execute_param.gif" label="Execute" style="push"
+				tooltip="Execute Escape model from parameters.">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="org.eclipse.amp.escape.allowexecuteParam">
+					</reference>
+				</visibleWhen>
+			</command>
+			<command commandId="org.eclipse.amp.escape.runtime.executeParamHeadless"
+				icon="icons/etool16/execute_param_headless.gif" label="Execute Headless" style="push"
+				tooltip="Execute Escape model from parameters without views.">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="org.eclipse.amp.escape.allowexecuteParam">
+					</reference>
+				</visibleWhen>
+			</command>
+   <command
+         commandId="org.eclipse.amp.escape.runtime.executeParamEMFHeadless"
+         icon="icons/etool16/execute_headless_emf.gif"
+         label="Execute Headless"
+         style="push"
+         tooltip="Execute Escape model from parameters with data collection.">
+      <visibleWhen
+            checkEnabled="false">
+         <reference
+               definitionId="org.eclipse.amp.escape.allowexecuteParam">
+         </reference>
+      </visibleWhen>
+   </command>
+   <command
+         commandId="org.eclipse.amp.escape.runtime.executeAMFEMFHeadless"
+         icon="icons/etool16/execute_headless_emf.gif"
+         label="Execute Headless"
+         style="push"
+         tooltip="Execute Escape model from parameters with data collection.">
+      <visibleWhen
+            checkEnabled="false">
+         <reference
+               definitionId="org.eclipse.amp.escape.allowexecuteParam">
+         </reference>
+      </visibleWhen>
+   </command>
+   <command
+         commandId="org.eclipse.amp.escape.runtime.executeJavaEMFHeadless"
+         icon="icons/etool16/execute_headless_emf.gif"
+         label="Execute Headless"
+         style="push"
+         tooltip="Execute Escape model from parameters with data collection.">
+      <visibleWhen
+            checkEnabled="false">
+         <reference
+               definitionId="org.eclipse.amp.escape.allowexecuteParam">
+         </reference>
+      </visibleWhen>
+   </command>
+		</menuContribution>
+  <menuContribution
+        locationURI="popup:org.metaabm.ide.generateMenuID">
+     <command
+           commandId="org.eclipse.amp.amf.gen.escape.3D"
+           icon="icons/etool16/generic_agent.gif"
+           label="Escape 3D Styles"
+           style="push"
+           tooltip="Manually generate Escape implementation. (It usually makes more sense to use a builder.)">
+        <visibleWhen
+              checkEnabled="false">
+           <reference
+                 definitionId="org.metaabm.metaABMFile">
+           </reference>
+        </visibleWhen>
+     </command>
+  </menuContribution>
+    </extension>
+ <extension point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="org.eclipse.amp.escape.amf.allowexecute">
+            <or>
+         <with
+               variable="selection">
+            <iterate
+                  ifEmpty="false">
+          <adapt
+                type="org.eclipse.core.resources.IResource">
+       <or>
+             <test
+                   property="org.eclipse.core.resources.name"
+                   value="*.metaabm">
+             </test>
+		</or>
+          </adapt>
+            </iterate>
+         </with>
+            </or>
+      </definition>
+		<definition id="org.eclipse.amp.escape.allowexecuteParam">
+			<or>
+				<with variable="selection">
+					<iterate ifEmpty="false">
+							<adapt type="org.eclipse.core.resources.IResource">
+								<or>
+									<test property="org.eclipse.core.resources.name" value="*.apar">
+									</test>
+								</or>
+							</adapt>
+					</iterate>
+				</with>
+			</or>
+		</definition>
+   </extension> 
+    <extension
+          point="org.eclipse.ui.handlers">
+       <handler
+             class="org.eclipse.amp.escape.amf.ide.ExecuteAMFHandler"
+             commandId="org.eclipse.amp.escape.runtime.executeAMF">
+          <activeWhen>
+          <reference
+                definitionId="org.eclipse.amp.escape.amf.allowexecute">
+          </reference>
+          </activeWhen>
+          <enabledWhen>
+          <reference
+                definitionId="org.eclipse.amp.escape.amf.allowexecute">
+          </reference>
+          </enabledWhen>
+       </handler>
+       <handler
+             class="org.eclipse.amp.escape.amf.ide.ExecuteAMFHeadlessHandler"
+             commandId="org.eclipse.amp.escape.runtime.executeAMFHeadless">
+          <activeWhen>
+             <reference
+                   definitionId="org.eclipse.amp.escape.amf.allowexecute">
+             </reference>
+          </activeWhen>
+          <enabledWhen>
+             <reference
+                   definitionId="org.eclipse.amp.escape.amf.allowexecute">
+             </reference>
+          </enabledWhen>
+       </handler>
+
+		<handler class="org.eclipse.amp.escape.amf.ide.ExecuteParameterHandler"
+			commandId="org.eclipse.amp.escape.runtime.executeParam">
+			<activeWhen>
+				<reference definitionId="org.eclipse.amp.escape.allowexecuteParam">
+				</reference>
+			</activeWhen>
+			<enabledWhen>
+				<reference definitionId="org.eclipse.amp.escape.allowexecuteParam">
+				</reference>
+			</enabledWhen>
+		</handler>
+		<handler class="org.eclipse.amp.escape.amf.ide.ExecuteParameterHeadlessHandler"
+			commandId="org.eclipse.amp.escape.runtime.executeParamHeadless">
+			<activeWhen>
+				<reference definitionId="org.eclipse.amp.escape.allowexecuteParam">
+				</reference>
+			</activeWhen>
+			<enabledWhen>
+				<reference definitionId="org.eclipse.amp.escape.allowexecuteParam">
+				</reference>
+			</enabledWhen>
+		</handler>
+       <handler
+             class="org.eclipse.amp.escape.amf.ide.ExecuteParamEMFOutputHandler"
+             commandId="org.eclipse.amp.escape.runtime.executeParamEMFHeadless">
+          <activeWhen>
+             <reference
+                   definitionId="org.eclipse.amp.escape.allowexecuteParam">
+             </reference>
+          </activeWhen>
+          <enabledWhen>
+             <reference
+                   definitionId="org.eclipse.amp.escape.allowexecuteParam">
+             </reference>
+          </enabledWhen>
+       </handler>
+       <handler
+             class="org.eclipse.amp.escape.amf.ide.ExecuteAMFEMFOutputHandler"
+             commandId="org.eclipse.amp.escape.runtime.executeAMFEMFHeadless">
+          <activeWhen>
+             <reference
+                   definitionId="org.eclipse.amp.escape.amf.allowexecute">
+             </reference>
+          </activeWhen>
+          <enabledWhen>
+             <reference
+                   definitionId="org.eclipse.amp.escape.amf.allowexecute">
+             </reference>
+          </enabledWhen>
+       </handler>
+       <handler
+             class="org.eclipse.amp.escape.amf.ide.ExecuteJavaEMFOutputHandler"
+             commandId="org.eclipse.amp.escape.runtime.executeJavaEMFHeadless">
+          <activeWhen>
+             <reference
+                   definitionId="org.eclipse.amp.escape.allowtest">
+             </reference>
+          </activeWhen>
+          <enabledWhen>
+             <reference
+                   definitionId="org.eclipse.amp.escape.allowtest">
+             </reference>
+          </enabledWhen>
+       </handler>
+       <handler
+             class="org.eclipse.amp.escape.amf.ide.GenerateEscapeHandler"
+             commandId="org.eclipse.amp.amf.gen.escape">
+       </handler>
+    </extension>
+	<extension
+          id="escapeBuilder"
+          name="Escape MetaABM Builder"
+          point="org.eclipse.core.resources.builders">
+       <builder
+             hasNature="false">
+          <run class="org.eclipse.amp.escape.amf.ide.EscapeModelBuilder"/>
+       </builder>
+    </extension> 
+    <extension point="org.eclipse.ui.newWizards">
+    <wizard
+          category="org.eclipse.amp.amf.ide.wizards"
+          class="org.eclipse.amp.escape.amf.ide.EscapeAMFProjectWizard"
+          descriptionImage="icons/etool16/generic_agent.gif"
+          icon="icons/etool16/EscapeProject.gif"
+          id="org.eclipse.amp.escape.amf.wizards.newProject"
+          name="Agent Modeling Escape Project"
+          project="true">
+      <description>Creates a new project for generating Escape implementations from MetaABM models.</description>
+    </wizard>
+    <wizard
+          category="org.eclipse.amp.amf.ide.wizards"
+          class="org.eclipse.amp.escape.amf.ide.ParameterFileWizard"
+          icon="icons/etool16/parameter_file.gif"
+          id="org.eclipse.amp.escape.wizards.newParameters"
+          name="Parameters File">
+    </wizard>
+    <wizard
+          category="org.eclipse.amp.amf.ide.wizards"
+          class="org.eclipse.amp.escape.amf.ide.TestRunFileWizard"
+          icon="icons/etool16/test.gif"
+          id="org.eclipse.amp.escape.wizards.newTest"
+          name="Test File">
+    </wizard>
+    </extension>
+    <extension
+          point="org.eclipse.ui.perspectiveExtensions">
+       <perspectiveExtension
+             targetID="org.eclipse.amp.amf.AgentModelingPerspective">
+          <newWizardShortcut
+                id="org.eclipse.amp.escape.amf.wizards.newProject">
+          </newWizardShortcut>
+          <newWizardShortcut
+                id="org.eclipse.amp.escape.wizards.newParameters">
+          </newWizardShortcut>
+          <newWizardShortcut
+                id="org.eclipse.amp.escape.wizards.newTest">
+          </newWizardShortcut>
+       </perspectiveExtension>
+    </extension>
+</plugin>
+

@@ -1,0 +1,5 @@
+=Support=
+
+==Issues==
+
+Eclipse and the AMP project have a mandate for open communication. Please note that unless you are a customer of an AMP project contributor we will not respond to direct requests for support. We ''will'' make every effort to support your use of AMP in the following ways:

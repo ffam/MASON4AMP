@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.amp.amf.core"
+      label="%featureName"
+      version="0.9.0.qualifier"
+      provider-name="%providerName"
+      plugin="org.eclipse.amp.amf.acore">
+
+   <description url="http://eclipse.org/amp">
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <requires>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.eclipse.emf.ecore.xmi"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.apache.commons.collections"/>
+      <import plugin="org.eclipse.emf.edit"/>
+      <import plugin="org.apache.commons.lang"/>
+   </requires>
+
+   <plugin
+         id="org.eclipse.amp.amf.acore"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.amp.amf.acore.edit"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

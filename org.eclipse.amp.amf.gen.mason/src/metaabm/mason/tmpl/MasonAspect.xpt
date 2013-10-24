@@ -1,0 +1,256 @@
+«IMPORT emf»
+«IMPORT metaabm»
+«IMPORT metaabm::act»
+«IMPORT metaabm::function»
+
+«EXTENSION metaabm::tmpl::names»
+«EXTENSION metaabm::tmpl::types»
+«EXTENSION metaabm::tmpl::infer»
+«EXTENSION metaabm::tmpl::util»
+«EXTENSION metaabm::tmpl::projections»
+
+
+«AROUND metaabm::mason::tmpl::JavaMason::ExtendType FOR SProjection-»SparseGrid2D«ENDAROUND»
+«AROUND metaabm::mason::tmpl::JavaMason::ExtendType FOR SContext-»«typeName()-»«ENDAROUND»
+
+«AROUND metaabm::mason::tmpl::JavaMason::ClassInheiritance FOR SContext-» extends SimState«ENDAROUND»
+«AROUND metaabm::mason::tmpl::JavaMason::ClassInheiritance FOR SAgent-» implements Steppable«ENDAROUND»
+«AROUND metaabm::mason::tmpl::JavaMason::ClassInheiritance FOR SStyle-»«ENDAROUND»
+
+«AROUND metaabm::mason::tmpl::JavaMason::Imports FOR SStyle-»
+	import java.awt.*;
+	import java.awt.Color;
+	import java.awt.event.*;
+	import java.awt.Graphics2D;
+	import javax.swing.*;
+	import javax.swing.JFrame;
+	import sim.engine.*;
+	import sim.engine.SimState;
+	import sim.display.*;
+	import sim.display.Controller;
+	import sim.display.GUIState;
+	import sim.portrayal.*;
+	import sim.portrayal.continuous.*;
+	import sim.portrayal.continuous.ContinuousPortrayal2D;
+	import sim.portrayal.DrawInfo2D;
+	import sim.portrayal.grid.*;
+	import sim.portrayal.network.*;
+	import sim.portrayal.simple.*;
+	import sim.portrayal.SimplePortrayal2D;
+	import sim.util.gui.*;
+«ENDAROUND»
+
+«AROUND metaabm::mason::tmpl::JavaMason::Imports FOR SAgent-»
+	import java.awt.*;
+	import sim.engine.*;
+	import sim.field.*;
+	import sim.field.continuous.*;
+	import sim.field.continuous.Continuous2D;
+	import sim.field.grid.*;
+	import sim.field.network.*;
+	import sim.portrayal.*;
+	import sim.portrayal.simple.*;
+	import sim.util.*;
+	import sim.util.Double2D;
+	import ec.util.*;
+	
+	//import per la grafica
+	import java.awt.Color;
+	import java.awt.event.*;
+	import java.awt.Graphics2D;
+	import javax.swing.*;
+	import javax.swing.JFrame;
+	import sim.engine.SimState;
+	import sim.display.*;
+	import sim.display.Controller;
+	import sim.display.GUIState;
+	import sim.portrayal.continuous.*;
+	import sim.portrayal.continuous.ContinuousPortrayal2D;
+	import sim.portrayal.DrawInfo2D;
+	import sim.portrayal.grid.*;
+	import sim.portrayal.network.*;
+	import sim.portrayal.SimplePortrayal2D;
+	import sim.util.gui.*;
+«ENDAROUND»
+
+«AROUND metaabm::mason::tmpl::JavaMason::Body FOR SAgent-»
+	
+	«targetDef.proceed()»
+	
+	
+	«EXPAND metaabm::mason::tmpl::ScapeAspect::AgentBodyConstructor-»
+	
+	«EXPAND metaabm::mason::tmpl::ScapeAspect::AgentBody-»
+	
+	«EXPAND metaabm::mason::tmpl::ScapeAspect::Step-»
+	
+	
+«ENDAROUND»
+
+
+«AROUND metaabm::mason::tmpl::JavaMason::Body FOR SContext-»
+	
+	
+	«EXPAND metaabm::mason::tmpl::JavaMason::UtilBody»
+	 
+	
+	public «implementation.className»(long seed){
+		super(seed);
+	}
+	
+	//Must add and after implement rule "start" 
+	
+	«EXPAND metaabm::mason::tmpl::JavaMason::GenerateComment»
+	
+	public static boolean graphicOn = false; 
+	
+	public static void main(String[] args) {
+		if(args.length!=0)
+			if(args[0].equalsIgnoreCase("graphic"))
+				graphicOn = true;
+		«implementation.className» «implementation.className.toFirstLower()» = new «implementation.className»(System.currentTimeMillis());
+		if(graphicOn){
+			«implementation.className.toFirstLower()».getGUIState().createController();
+		}
+		else{
+			doLoop(«implementation.className».class, args);
+			System.exit(0);
+		}        
+	}
+	
+	
+	private GUIState gui;
+	private Display2D display;
+	private JFrame displayFrame;
+
+	SparseGridPortrayal2D particlePortrayal = new SparseGridPortrayal2D();
+	
+	public GUIState getGUIState(){
+		if(gui==null){
+			gui = new GUIState(this) {
+				
+				{
+				}
+				
+				public void quit() {
+					super.quit();
+
+					if (displayFrame != null)
+						displayFrame.dispose();
+					displayFrame = null; // let gc
+					display = null; // let gc
+				}
+
+				public void start() {
+					super.start();
+					// set up our portrayals
+					setupPortrayals();
+				}
+
+				public void load(SimState state) {
+					super.load(state);
+					// we now have new grids.  Set up the portrayals to reflect that
+					setupPortrayals();
+				}
+
+				/*
+				* add Rule portrayals to «implementation.className»'s actions 
+				* if you want to invoke this method
+				*/
+				public void setupPortrayals() {
+					//if you want to invoke this method
+					«FOREACH acts() AS act-»
+						«IF act.label.matches("portrayals")-»
+					portrayals();
+						«ENDIF-»
+					«ENDFOREACH-»
+
+					try{
+					// reschedule the displayer
+					display.reset();
+
+					// redraw the display
+					display.repaint();
+					}catch (NullPointerException e){
+						System.err.println("SEVERE: initGUI rule not found. Implement initGUI and initialize Display");
+					}
+				}
+	
+				/*
+				* add Rule initGUI to «implementation.className»'s actions 
+				* if you want to invoke this method
+				*/
+				public void init(Controller c) {
+					super.init(c);
+					«FOREACH acts() AS act-»
+						«IF act.label.matches("initGUI")-»
+					initGUI();
+						«ENDIF-»
+					«ENDFOREACH-»
+				
+
+				}
+				
+			}; 
+			
+		}
+		return gui;			
+	}
+	
+	
+«ENDAROUND»
+
+«AROUND metaabm::mason::tmpl::JavaMason::FunctionInnerBlock (List[metaabm::act::AAct] path, Boolean inner) FOR ASink-»
+    «IF function.id() == "randomUnit"-»
+        random().nextDouble()
+    «ELSEIF function.id() == "randomToLimit"-»
+		«IF inputs.get(0).value.typeName().matches("int")»
+			random.nextInt(«inputs.get(0).expression(path, inner)»)
+		«ELSEIF inputs.get(0).value.typeName().matches("double")»
+			random.nextDouble(«inputs.get(0).expression(path, inner)»)
+		«ENDIF-»
+	«ELSEIF function.id() == "randomIs"-»
+        random().nextBoolean()
+        
+    «ELSEIF function.id() == "uniformDistribution"-»
+        randomInRange(«inputs.expression(path, inner).toString(", ")»);
+	«ELSEIF function.id() == "timeNow"-»
+		«path.last().accessPath(this, inner)»«reference.owner != null ? "getScape()." : ""»getPeriod()
+    «ELSEIF function.id() == "available"-»
+        isAvailable()
+    «ELSEIF function.id() == "withinBoundaries"-»
+        «expressionSink(path, function, inner)»
+	«ELSE-»
+		«targetDef.proceed()»
+	«ENDIF-»
+«ENDAROUND»
+
+«AROUND metaabm::mason::tmpl::JavaMason::OtherAccessors FOR SAgent-»
+	«targetDef.proceed()-»
+    «EXPAND metaabm::mason::tmpl::ScapeAspect::NameAccessor-»
+«ENDAROUND»
+
+
+
+«AROUND metaabm::mason::tmpl::JavaMason::MethodPotential (metaabm::act::AAct within) FOR FFunction-»
+	«IF (id() == "withinBoundaries") || (id() == "distance")-»
+		«EXPAND metaabm::mason::tmpl::JavaMason::Method-»
+	«ELSE-»
+		«targetDef.proceed()-»
+	«ENDIF-»
+«ENDAROUND»
+
+
+
+
+«AROUND metaabm::mason::tmpl::JavaMason::BeginSerialBlock(List[AAct] path, Boolean inner) FOR AControl-»
+	«EXPAND metaabm::mason::tmpl::ScapeAspect::BeginSerial(path, inner)-»
+    «targetDef.proceed()-»
+«ENDAROUND»
+«AROUND metaabm::mason::tmpl::JavaMason::EndSerialBlock(List[AAct] path, Boolean inner) FOR AControl-»
+	«EXPAND metaabm::mason::tmpl::ScapeAspect::EndSerial(path, inner)-»
+    «targetDef.proceed()-»
+«ENDAROUND»
+
+
+	

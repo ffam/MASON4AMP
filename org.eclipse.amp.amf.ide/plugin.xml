@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id: plugin.xml,v 1.9 2010/08/04 01:54:58 mparker Exp $
+-->
+
+<plugin>
+   <extension point="org.eclipse.ui.perspectives">
+   <perspective
+         class="org.eclipse.amp.amf.ide.AgentModelingPerspectiveFactory"
+         fixed="false"
+         icon="icons/AMF16.png"
+         id="org.eclipse.amp.amf.AgentModelingPerspective"
+         name="Agent Modeling">
+   </perspective>
+   </extension>
+    <extension point="org.eclipse.ui.perspectiveExtensions"> 
+        <perspectiveExtension 
+            targetID="org.eclipse.amp.amf.AgentModelingPerspective"> 
+            <perspectiveShortcut id="org.eclipse.amp.amf.AgentModelingPerspective"/>
+            <view
+                  id="org.eclipse.jdt.ui.PackageExplorer"
+                  ratio=".3"
+                  relationship="left"
+                  relative="org.eclipse.ui.editorss"
+                  standalone="false">
+            </view>
+            <view
+                  id="org.eclipse.ui.views.PropertySheet"
+                  ratio=".70"
+                  relationship="bottom"
+                  relative="org.eclipse.jdt.ui.PackageExplorer"
+                  standalone="false">
+            </view>
+            <view
+                  id="org.eclipse.ui.views.ContentOutline"
+                  minimized="false"
+                  ratio="0.5"
+                  relationship="right"
+                  relative="org.eclipse.jdt.ui.PackageExplorer"
+                  standalone="false">
+            </view>
+            <view
+                  id="org.eclipse.ui.views.ProblemView"
+                  minimized="true"
+                  ratio=".78"
+                  relationship="bottom"
+                  relative="org.eclipse.ui.editorss"
+                  standalone="false">
+            </view>
+            <view
+                  id="org.eclipse.ui.console.ConsoleView"
+                  minimized="true"
+                  relationship="stack"
+                  relative="org.eclipse.ui.views.ProblemView"
+                  standalone="false">
+            </view>
+            <view
+                  id="org.eclipse.pde.runtime.LogView"
+                  minimized="true"
+                  relationship="stack"
+                  relative="org.eclipse.ui.views.ProblemView"
+                  standalone="false">
+            </view>
+            <viewShortcut
+                  id="org.eclipse.ui.views.PropertySheet">
+            </viewShortcut>
+            <perspectiveShortcut
+                  id="org.eclipse.ui.views.ContentOutline">
+            </perspectiveShortcut>
+            <viewShortcut
+                  id="org.eclipse.ui.views.ProblemView">
+            </viewShortcut>
+            <viewShortcut
+                  id="org.eclipse.ui.console.ConsoleView">
+            </viewShortcut>
+            <viewShortcut
+                  id="org.eclipse.pde.runtime.LogView">
+            </viewShortcut>
+            <viewShortcut
+                  id="org.eclipse.ui.views.ResourceNavigator">
+            </viewShortcut>
+            <viewShortcut
+                  id="org.eclipse.ui.views.ProgressView">
+            </viewShortcut>
+            
+            <newWizardShortcut
+                  id="org.eclipse.ui.wizards.new.folder"/>
+            <newWizardShortcut
+                  id="org.eclipse.amp.amf.ide.wizards.newBaseProject">
+            </newWizardShortcut>
+            <hiddenToolBarItem
+                  id="org.eclipse.ui.edit.findIncremental">
+            </hiddenToolBarItem>
+            <hiddenToolBarItem
+                  id="org.eclipse.ui.edit.findIncrementalReverse">
+            </hiddenToolBarItem>
+            <hiddenToolBarItem
+                  id="org.eclipse.ui.edit.findPrevious">
+            </hiddenToolBarItem>
+            <hiddenToolBarItem
+                  id="org.eclipse.ui.edit.findNext">
+            </hiddenToolBarItem>
+        </perspectiveExtension>
+        <perspectiveExtension
+              targetID="org.eclipse.jdt.ui.JavaPerspective">
+           <perspectiveShortcut
+                 id="org.eclipse.amp.amf.AgentModelingPerspective">
+           </perspectiveShortcut>
+        </perspectiveExtension>
+        <perspectiveExtension
+              targetID="org.eclipse.ui.resourcePerspective">
+           <perspectiveShortcut
+                 id="org.eclipse.amp.amf.AgentModelingPerspective">
+           </perspectiveShortcut>
+        </perspectiveExtension> 
+    </extension> 
+  </plugin>

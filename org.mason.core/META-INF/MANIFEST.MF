@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-Vendor: %providerName
+Bundle-SymbolicName: org.mason.core
+Bundle-Version: 17.0.0.qualifier
+Bundle-ClassPath: .
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: ec.util,
+ sim.display,
+ sim.engine,
+ sim.field,
+ sim.field.continuous,
+ sim.field.grid,
+ sim.field.network,
+ sim.portrayal,
+ sim.portrayal.continuous,
+ sim.portrayal.grid,
+ sim.portrayal.inspector,
+ sim.portrayal.network,
+ sim.portrayal.simple,
+ sim.util,
+ sim.util.distribution,
+ sim.util.gui,
+ sim.util.media
+Bundle-Localization: plugin
+

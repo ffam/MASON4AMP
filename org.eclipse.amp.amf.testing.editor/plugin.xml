@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id: plugin.xml,v 1.6 2010/08/04 01:55:08 mparker Exp $
+-->
+
+<plugin>
+
+
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            id="org.eclipse.amp.amf.testing.ares.presentation.AresEditorID"
+            name="%_UI_AresEditor_label"
+            icon="icons/full/obj16/test_result.gif"
+            extensions="ares"
+            class="org.eclipse.amp.amf.testing.ares.presentation.AresEditor"
+            contributorClass="org.eclipse.amp.amf.testing.ares.presentation.AresActionBarContributor">
+      </editor>
+   </extension>
+
+
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            id="org.eclipse.amp.amf.testing.aTest.presentation.ATestEditorID"
+            name="Test Model Editor"
+            icon="icons/full/obj16/test.gif"
+            extensions="atest"
+            class="org.eclipse.amp.amf.testing.aTest.presentation.ATestEditor"
+            contributorClass="org.eclipse.amp.amf.testing.aTest.presentation.ATestActionBarContributor">
+      </editor>
+   </extension>
+   
+   
+      <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:org.eclipse.ui.popup.any?after=ui-actions">
+         <command
+               commandId="org.eclipse.amp.amf.openATest"
+               icon="icons/full/obj16/test.gif"
+               label="Open Test File"
+               style="push">
+            <visibleWhen>
+               <iterate>
+                  <or>
+                     <adapt
+                           type="org.eclipse.amp.amf.testing.aTest.Model">
+                     </adapt>
+                     <adapt
+                           type="org.eclipse.amp.amf.testing.ares.Run">
+                     </adapt>
+                  </or>
+               </iterate>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="org.eclipse.amp.amf.testing.ares.presentation.OpenATestHandler"
+            commandId="org.eclipse.amp.amf.openATest">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="org.eclipse.amp.amf.ares"
+            id="org.eclipse.amp.amf.openATest"
+            name="Import Agent from GIS">
+      </command>
+      <category
+            id="org.eclipse.amp.amf.ares"
+            name="ARes Files">
+      </category>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editorActions">
+      <editorContribution
+            id="org.eclipse.amp.amf.openATest"
+            targetID="org.eclipse.amp.amf.testing.ares.presentation.AresEditorID">
+      </editorContribution>
+   </extension>
+   
+</plugin>

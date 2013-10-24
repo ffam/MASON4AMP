@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+     <view
+           allowMultiple="true"
+           category="org.eclipse.amp.axf.views"
+           class="org.eclipse.amp.agf3d.GEF3DViewPart"
+           icon="icons/etool16/2_5D.gif"
+           id="org.eclipse.amp.view.GEF3DView"
+           name="3D Agents"
+           restorable="true">
+     </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.viewActions">
+      <viewContribution
+            id="org.eclipse.amp.agf.3d.helicopter"
+            targetID="org.eclipse.amp.view.GEF3DView">
+         <action
+               class="org.eclipse.amp.agf3d.ui.CameraHelicopterAction"
+               icon="icons/etool16/helicopter.gif"
+               id="org.eclipse.amp.agf.3d.actionHelicopter"
+               label="Helicopter View"
+               menubarPath="additions"
+               style="push"
+               toolbarPath="customGroup"
+               tooltip="Move camera (viewer&apos;s perspective) to an oblique perspective.">
+         </action>
+      </viewContribution>
+      <viewContribution
+            id="org.eclipse.amp.agf.3d.overhead"
+            targetID="org.eclipse.amp.view.GEF3DView">
+         <action
+               class="org.eclipse.amp.agf3d.ui.CameraOverheadAction"
+               icon="icons/etool16/overhead.gif"
+               id="org.eclipse.amp.agf.3d.actionOverhead"
+               label="Overhead View"
+               menubarPath="additions"
+               style="push"
+               toolbarPath="customGroup"
+               tooltip="Move camera (viewer&apos;s perspective) directly overhead.">
+         </action>
+      </viewContribution>
+      <viewContribution
+            id="org.eclipse.amp.agf.3d.firstperson"
+            targetID="org.eclipse.amp.view.GEF3DView">
+         <action
+               class="org.eclipse.amp.agf3d.ui.CameraFirstPersonAction"
+               icon="icons/etool16/first_person.gif"
+               id="org.eclipse.amp.agf.3d.actionFirstPerson"
+               label="First Person View"
+               menubarPath="additions"
+               style="push"
+               toolbarPath="customGroup"
+               tooltip="Move camera (viewer&apos;s perspective) to a first-person perspective.">
+         </action>
+      </viewContribution>
+      <viewContribution
+            id="org.eclipse.amp.agf3d.animate"
+            targetID="org.eclipse.amp.view.GEF3DView">
+         <action
+               class="org.eclipse.amp.agf3d.ui.AnimateAction"
+               icon="icons/etool16/animate.gif"
+               id="org.eclipse.amp.agf.3d.actionAnimate"
+               label="Animate"
+               menubarPath="additions"
+               state="true"
+               style="toggle"
+               toolbarPath="customGroup"
+               tooltip="Animate agent motion.">
+         </action>
+      </viewContribution>
+   </extension>
+      <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="java.lang.Object"
+            class="org.eclipse.amp.agf3d.Model3DAdapterFactory">
+         <adapter
+               type="org.eclipse.amp.agf3d.IModel3DFactoryProvider">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="java.lang.Object"
+            class="org.eclipse.amp.agf3d.Graphics3DAdapterFactory">
+         <adapter
+               type="org.eclipse.amp.agf3d.IGraphics3DAdapter">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="java.lang.Object"
+            class="org.eclipse.amp.agf3d.Graphics3DAdapter">
+         <adapter
+               type="org.eclipse.amp.agf3d.IShape3DProvider">
+         </adapter>
+      </factory>
+   </extension>
+</plugin>

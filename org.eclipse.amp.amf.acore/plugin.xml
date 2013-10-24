@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id: plugin.xml,v 1.4 2010/08/04 01:53:01 mparker Exp $
+-->
+
+<plugin>
+
+  <extension point="org.eclipse.emf.ecore.generated_package">
+    <package 
+       uri = "http://metaabm.org/structure" 
+       class = "org.metaabm.MetaABMPackage"
+       genModel = "model/metaabm.genmodel" />
+  </extension>
+
+  <extension point="org.eclipse.emf.ecore.generated_package">
+    <package 
+       uri = "http://metaabm.org/act" 
+       class = "org.metaabm.act.MetaABMActPackage"
+       genModel = "model/metaabm.genmodel"  />
+  </extension>
+
+  <extension point="org.eclipse.emf.ecore.generated_package">
+    <package 
+       uri = "http://metaabm.org/function" 
+       class = "org.metaabm.function.MetaABMFunctionPackage"
+       genModel = "model/metaabm.genmodel"  />
+  </extension>
+  
+  <!--Here for backward compatibility for old url issue -->
+ <extension
+       point="org.eclipse.emf.ecore.generated_package">
+    <package
+          class="org.metaabm.MetaABMPackage"
+          uri="http://metaabm.org/metaabm.org/structure"
+          genModel = "model/metaabm.genmodel"/>
+ </extension>
+ 
+  <extension point="org.eclipse.emf.ecore.extension_parser">
+    <parser 
+       type="metaabm" 
+       class="org.metaabm.util.MetaABMResourceFactoryImpl" />
+  </extension>
+
+	<extension point="org.eclipse.emf.ecore.uri_mapping">
+     <mapping
+           source="http://metaabm.org/core_library.metaabm"
+           target="platform:/plugin/org.eclipse.amp.amf.acore/src/model/core_library.metaabm">
+     </mapping>
+  </extension>
+
+
+</plugin>
+

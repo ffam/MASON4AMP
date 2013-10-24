@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id: plugin.xml,v 1.11 2010/05/11 01:43:48 mparker Exp $
+-->
+
+<plugin>
+
+  <extension
+        point="org.eclipse.core.runtime.adapters">
+     <factory
+           adaptableType="org.eclipse.amp.axf.ide.ModelViewManager"
+           class="org.eclipse.amp.escape.ascape.adapt.AscapeGraphicsAdapter">
+        <adapter
+              type="org.eclipse.jface.viewers.ILabelProvider">
+        </adapter>
+     </factory>
+     <factory
+           adaptableType="org.eclipse.amp.axf.view.ModelViewPart"
+           class="org.eclipse.amp.escape.ascape.adapt.AscapePropertiesAdapterFactory">
+        <adapter
+              type="org.eclipse.ui.views.properties.IPropertySourceProvider">
+        </adapter>
+     </factory>
+     <factory
+           adaptableType="org.ascape.model.Agent"
+           class="org.eclipse.amp.escape.ascape.adapt.AscapePropertiesAdapterFactory">
+        <adapter
+              type="org.eclipse.ui.views.properties.IPropertySource">
+        </adapter>
+     </factory>
+     <factory
+           adaptableType="org.ascape.model.Agent"
+           class="org.eclipse.amp.escape.ascape.adapt.AscapeGraphicsAdapter">
+        <adapter
+              type="org.eclipse.jface.viewers.ILabelProvider">
+        </adapter>
+        <adapter
+              type="org.eclipse.jface.viewers.IColorProvider">
+        </adapter>
+        <adapter
+              type="org.eclipse.amp.agf.gef.IFigureProvider">
+        </adapter>
+     </factory>
+     <factory
+           adaptableType="org.ascape.model.Agent"
+           class="org.eclipse.amp.escape.ascape.adapt.AscapeModelAdapterFactory">
+        <adapter
+              type="org.eclipse.amp.axf.space.ILocationProvider">
+        </adapter>
+        <adapter
+              type="org.eclipse.amp.axf.space.IGraphProvider">
+        </adapter>
+        <adapter
+              type="org.eclipse.amp.axf.core.ICompositionProvider">
+        </adapter>
+      </factory>
+      <factory
+           adaptableType="org.ascape.model.Agent"
+           class="org.eclipse.amp.escape.ascape.adapt.AscapeGraphicsAdapterFactory">
+        <adapter
+              type="org.eclipse.amp.agf.IGraphicsAdapter">
+        </adapter>
+      </factory>
+      
+   </extension>
+  <extension
+        point="org.eclipse.ui.views">
+     <view
+           allowMultiple="true"
+           category="org.eclipse.amp.axf.views"
+           class="org.eclipse.amp.escape.ascape.gef.GraphicsViewPart"
+           icon="icons/etool16/group.gif"
+           id="org.eclipse.amp.escape.view.GraphicsView"
+           name="Agent Graphics"
+           restorable="true">
+     </view>
+  </extension>
+</plugin>
+

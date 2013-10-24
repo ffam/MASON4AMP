@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id: plugin.xml,v 1.19 14/10/2013 16:24:58 Amoruso Marco & Francesco Farina Exp $
+-->
+
+<plugin>
+
+ 
+   <extension
+          id="masonBuilder"
+          name="Mason MetaABM Builder"
+          point="org.eclipse.core.resources.builders">
+       <builder
+             hasNature="false">
+          <run class="org.eclipse.amp.amf.ide.mason.MasonModelBuilder"/>
+       </builder>
+    </extension> 
+    <extension point="org.eclipse.ui.newWizards">
+    <wizard
+          category="org.eclipse.amp.amf.ide.wizards"
+          class="org.eclipse.amp.amf.ide.mason.MasonProjectWizard"
+          descriptionImage="icons/Mason32.gif"
+          icon="icons/obj16/MasonProject.gif"
+          id="org.eclipse.amp.amf.mason.wizards.newProject"
+          name="Agent Modeling Mason Project"
+          project="true">
+      <description>Creates a new project for generating Mason implementations from MetaABM models.</description>
+    </wizard>
+    </extension>
+    <extension
+          point="org.eclipse.ui.perspectiveExtensions">
+       <perspectiveExtension
+             targetID="org.eclipse.amp.amf.AgentModelingPerspective">
+          <newWizardShortcut
+                id="org.eclipse.amp.amf.mason.wizards.newProject">
+          </newWizardShortcut>
+       </perspectiveExtension>
+    </extension>
+</plugin>
+

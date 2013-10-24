@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ManifestVersion: 2
+Bundle-Name: Test Acore MetaABM Model Generation
+Bundle-SymbolicName: org.eclipse.amp.amf.gen.test
+Bundle-Version: 0.8.5
+Require-Bundle: org.eclipse.core.resources,
+ org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.jdt.core,
+ org.eclipse.jdt.ui,
+ org.eclipse.ui.ide,
+ org.eclipse.ui.ide.application,
+ org.eclipse.amp.amf.gen.ide,
+ org.eclipse.swtbot.eclipse.core,
+ org.eclipse.swtbot.swt.finder,
+ org.eclipse.swtbot.eclipse.finder
+Import-Package: org.apache.commons.lang
+Export-Package: 
+ org.metaabm.gen.test,
+ org.metaabm.gen.test.share
+Bundle-Vendor: Eclipse.org
+Bundle-ClassPath: .
+Bundle-Activator: Activator

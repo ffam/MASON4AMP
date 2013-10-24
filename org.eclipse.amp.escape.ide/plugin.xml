@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+
+<plugin>
+	<extension point="org.eclipse.ui.commands">
+		<command
+        categoryId="org.eclipse.amp.axf.ui"
+        defaultHandler="org.eclipse.amp.escape.command.ExecuteJavaHandler"
+        description="Execute a Java Model"
+        id="org.eclipse.amp.escape.runtime.execute"
+        name="Execute">
+     <commandParameter
+           id="elementRef"
+           name="Java Element Reference"
+           optional="true"
+           typeId="org.eclipse.jdt.ui.commands.javaElementReference">
+     </commandParameter>
+		</command>
+		<command
+        categoryId="org.eclipse.amp.axf.ui"
+        description="Execute a Java Model in Headless Mode"
+        id="org.eclipse.amp.escape.runtime.executeHeadless"
+        name="Execute Headless">
+		</command>
+	</extension>
+	<extension point="org.eclipse.ui.menus">
+		<menuContribution locationURI="popup:org.eclipse.ui.popup.any">
+			<command
+         commandId="org.eclipse.amp.escape.runtime.execute"
+         icon="icons/etool16/execute.gif"
+         id="Execute Headless"
+         label="Execute"
+         style="push"
+         tooltip="Execute Escape Java model.">
+				<visibleWhen checkEnabled="false">
+       <reference
+             definitionId="org.eclipse.amp.escape.allowexecute">
+       </reference>
+				</visibleWhen>
+			</command>
+			<command commandId="org.eclipse.amp.escape.runtime.executeHeadless"
+				icon="icons/etool16/execute_headless.gif" style="push" tooltip="Execute Escape Java model.">
+				<visibleWhen checkEnabled="false">
+       <reference
+             definitionId="org.eclipse.amp.escape.allowexecute">
+       </reference>
+				</visibleWhen>
+			</command>
+		</menuContribution>
+		<menuContribution
+			locationURI="toolbar:org.eclipse.amp.escape.ide.launch?after=additions">
+			<command commandId="org.eclipse.amp.escape.runtime.execute"
+				icon="icons/etool16/execute.gif" label="Execute" style="push"
+				tooltip="Execute Escape Java model.">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="org.eclipse.amp.escape.allowexecute">
+					</reference>
+				</visibleWhen>
+			</command>
+			<command commandId="org.eclipse.amp.escape.runtime.executeHeadless"
+				icon="icons/etool16/execute_headless.gif" label="Execute Headless" style="push"
+				tooltip="Execute Escape Java model without views.">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="org.eclipse.amp.escape.allowexecute">
+					</reference>
+				</visibleWhen>
+			</command>
+		</menuContribution>
+		<menuContribution locationURI="menu:org.eclipse.amp.axf.ui.menu?after=additions">
+			<command commandId="org.eclipse.amp.escape.runtime.execute"
+				icon="icons/etool16/execute.gif" label="Execute" style="push"
+				tooltip="Execute Escape Java model.">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="org.eclipse.amp.escape.allowexecute">
+					</reference>
+				</visibleWhen>
+			</command>
+			<command commandId="org.eclipse.amp.escape.runtime.executeHeadless"
+				icon="icons/etool16/execute_headless.gif" label="Execute Headless" style="push"
+				tooltip="Execute Escape Java model without views.">
+				<visibleWhen checkEnabled="false">
+					<reference definitionId="org.eclipse.amp.escape.allowexecute">
+					</reference>
+				</visibleWhen>
+			</command>
+		</menuContribution>
+		
+  <menuContribution
+        locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+     <toolbar
+           id="org.eclipse.amp.escape.ide.launch">
+     </toolbar>
+  </menuContribution>
+	</extension>
+	<extension point="org.eclipse.core.expressions.definitions">
+		<definition id="org.eclipse.amp.escape.allowexecute">
+			<or>
+				<with variable="selection">
+					<iterate ifEmpty="false">
+       <or>
+          <adapt
+                type="org.eclipse.jdt.core.ICompilationUnit">
+          </adapt>
+          <adapt
+                type="org.eclipse.jdt.core.IType">
+          </adapt></or>
+					</iterate>
+				</with>
+			</or>
+		</definition>
+	</extension>
+	<extension point="org.eclipse.ui.handlers">
+		<handler class="org.eclipse.amp.escape.command.ExecuteJavaHandler"
+			commandId="org.eclipse.amp.escape.runtime.execute">
+			<activeWhen>
+				<reference definitionId="org.eclipse.amp.escape.allowexecute">
+				</reference>
+			</activeWhen>
+			<enabledWhen>
+				<reference definitionId="org.eclipse.amp.escape.allowexecute">
+				</reference>
+			</enabledWhen>
+		</handler>
+		<handler class="org.eclipse.amp.escape.command.ExecuteJavaHeadlessHandler"
+			commandId="org.eclipse.amp.escape.runtime.executeHeadless">
+			<activeWhen>
+				<reference definitionId="org.eclipse.amp.escape.allowexecute">
+				</reference>
+			</activeWhen>
+			<enabledWhen>
+				<reference definitionId="org.eclipse.amp.escape.allowexecute">
+				</reference>
+			</enabledWhen>
+		</handler>
+	</extension>
+	<extension point="org.eclipse.ui.bindings">
+		<key commandId="org.eclipse.amp.escape.runtime.execute" contextId="org.eclipse.ui.contexts.window"
+			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration" sequence="M1+L">
+		</key>
+	</extension>
+<extension point="org.eclipse.ui.newWizards">
+   <wizard
+         category="org.eclipse.escape.wizards"
+         class="org.eclipse.amp.escape.ide.EscapeJavaPluginProjectWizard"
+         descriptionImage="icons/escape32.png"
+         icon="icons/etool16/EscapeJavaProject.gif"
+         id="org.eclipse.amp.escape.wizards.newProject"
+         name="Escape Java Project"
+         project="true">
+      <description>
+         Creates a new &quot;plain old java&quot; project for Escape models.
+      </description>
+   </wizard>
+	</extension>
+	
+   <extension point="org.eclipse.ui.perspectives">
+   <perspective
+         class="org.eclipse.amp.escape.ide.EscapePerspective"
+         fixed="false"
+         icon="icons/escape16.png"
+         id="org.eclipse.escape.EscapePerspective"
+         name="Escape">
+   </perspective>
+   </extension>
+    <extension point="org.eclipse.ui.perspectiveExtensions"> 
+        <perspectiveExtension 
+            targetID="org.eclipse.escape.EscapePerspective"> 
+            <perspectiveShortcut id="org.eclipse.amp.axf.ExecutionPerspective"/>
+            <view
+                  id="org.eclipse.jdt.ui.PackageExplorer"
+                  ratio=".25"
+                  relationship="left"
+                  relative="org.eclipse.ui.editorss"
+                  standalone="false">
+            </view>
+            <view
+                  id="org.eclipse.ui.views.ResourceNavigator"
+                  relationship="stack"
+                  relative="org.eclipse.jdt.ui.PackageExplorer">
+            </view>
+            <view
+                  id="org.eclipse.ui.views.ContentOutline"
+                  ratio="0.2"
+                  relationship="left"
+                  relative="org.eclipse.ui.editorss">
+            </view>
+            <view
+                  id="org.eclipse.ui.views.PropertySheet"
+                  ratio=".70"
+                  relationship="bottom"
+                  relative="org.eclipse.jdt.ui.PackageExplorer">
+            </view>
+            <view
+                  id="org.eclipse.ui.views.ProblemView"
+                  ratio=".78"
+                  relationship="bottom"
+                  relative="org.eclipse.ui.editorss">
+            </view>
+            <view
+                  id="org.eclipse.ui.console.ConsoleView"
+                  relationship="stack"
+                  relative="org.eclipse.ui.views.ProblemView">
+            </view>
+            <view
+                  id="org.eclipse.pde.runtime.LogView"
+                  minimized="false"
+                  relationship="stack"
+                  relative="org.eclipse.ui.views.ProblemView"
+                  standalone="false">
+            </view>
+            <viewShortcut
+                  id="org.eclipse.ui.views.PropertySheet">
+            </viewShortcut>
+            <viewShortcut
+                  id="org.eclipse.ui.views.ProblemView">
+            </viewShortcut>
+            <viewShortcut
+                  id="org.eclipse.ui.console.ConsoleView">
+            </viewShortcut>
+            <viewShortcut
+                  id="org.eclipse.pde.runtime.LogView">
+            </viewShortcut>
+            <viewShortcut
+                  id="org.eclipse.jdt.ui.SourceView">
+            </viewShortcut>
+            <viewShortcut
+                  id="org.eclipse.jdt.ui.JavadocView">
+            </viewShortcut>
+            <viewShortcut
+                  id="org.eclipse.ui.views.ResourceNavigator">
+            </viewShortcut>
+            <viewShortcut
+                  id="org.eclipse.ui.views.ProgressView">
+            </viewShortcut>
+            <newWizardShortcut
+                  id="org.ascape.wizards.newProject">
+            </newWizardShortcut>
+            <newWizardShortcut
+                  id="org.eclipse.amp.escape.wizards.newProject">
+            </newWizardShortcut>
+            
+            <newWizardShortcut
+                  id="org.eclipse.ui.wizards.new.folder"/>
+            <newWizardShortcut
+                  id="org.eclipse.jdt.ui.wizards.NewPackageCreationWizard"/>
+            <newWizardShortcut
+                  id="org.eclipse.jdt.ui.wizards.NewClassCreationWizard"/>
+            <newWizardShortcut
+                  id="org.eclipse.jdt.ui.wizards.NewInterfaceCreationWizard"/>
+            <actionSet
+                  id="org.eclipse.debug.ui.launchActionSet">
+            </actionSet>
+            <actionSet
+                  id="org.eclipse.jdt.ui.JavaActionSet">
+            </actionSet>
+            <actionSet
+                  id="org.eclipse.jdt.ui.JavaElementCreationActionSet">
+            </actionSet>
+            <actionSet
+                  id="org.eclipse.ui.NavigateActionSet">
+            </actionSet>
+        </perspectiveExtension>
+        <perspectiveExtension
+              targetID="org.eclipse.jdt.ui.JavaPerspective">
+           <perspectiveShortcut
+                 id="org.eclipse.escape.EscapePerspective">
+           </perspectiveShortcut>
+        </perspectiveExtension>
+        <perspectiveExtension
+              targetID="org.eclipse.ui.resourcePerspective">
+           <perspectiveShortcut
+                 id="org.eclipse.escape.EscapePerspective">
+           </perspectiveShortcut>
+        </perspectiveExtension>
+		<perspectiveExtension targetID="org.eclipse.amp.axf.ExecutionPerspective">
+			<view id="org.eclipse.amp.view.GEFView:*" ratio=".8"
+				relationship="left" relative="org.eclipse.ui.editorss" visible="false">
+			</view>
+			<view id="org.eclipse.amp.view.GEF3DView:*" ratio=".8"
+				relationship="left" relative="org.eclipse.ui.editorss" visible="false">
+			</view>
+			<view
+         id="org.eclipse.amp.view.TreeView"
+         relationship="stack"
+         relative="org.eclipse.amp.view.ModelManager"
+         visible="true">
+			</view>
+			<view id="org.eclipse.amp.escape.view.GraphicsView:*" ratio=".8"
+				relationship="left" relative="org.eclipse.ui.editorss" visible="false">
+			</view>
+			<viewShortcut id="org.eclipse.amp.view.TreeView">
+			</viewShortcut>
+			<viewShortcut id="org.eclipse.amp.escape.view.GraphicsView">
+			</viewShortcut>
+   <perspectiveShortcut
+         id="org.eclipse.escape.EscapePerspective">
+   </perspectiveShortcut>
+   <view
+         id="org.eclipse.amp.escape.ide.InfoView"
+         minimized="true"
+         ratio=".3"
+         relationship="right"
+         relative="org.eclipse.amp.view.TreeView"
+         visible="true">
+   </view>
+   <viewShortcut
+         id="org.eclipse.amp.escape.ide.InfoView">
+   </viewShortcut>
+		</perspectiveExtension>
+			<perspectiveExtension targetID="org.eclipse.amp.amf.AgentModelingPerspective"> <perspectiveShortcut
+			id="org.eclipse.amp.axf.ExecutionPerspective"> </perspectiveShortcut>
+			<newWizardShortcut id="org.eclipse.amp.escape.wizards.newProject">
+			</newWizardShortcut> <newWizardShortcut
+			id="org.eclipse.amp.escape.wizards.newParameters">
+			</newWizardShortcut> <newWizardShortcut
+			id="org.eclipse.amp.escape.wizards.newTest"> </newWizardShortcut>
+			</perspectiveExtension> <perspectiveExtension
+			targetID="org.eclipse.jdt.ui.JavaPerspective"> <perspectiveShortcut
+			id="org.eclipse.amp.axf.ExecutionPerspective"> </perspectiveShortcut>
+			</perspectiveExtension>
+    </extension>
+<extension
+          point="org.eclipse.ui.views">
+       <view
+             allowMultiple="false"
+             category="org.eclipse.amp.axf.views"
+             class="org.eclipse.amp.escape.ide.InfoView"
+             icon="icons/etool16/info.gif"
+             id="org.eclipse.amp.escape.ide.InfoView"
+             name="About this Model"
+             restorable="true">
+       </view>
+    </extension>
+<!--	<extension point="org.eclipse.ui.editors">
+		<editor class="org.eclipse.ui.editors.text.TextEditor" default="false"
+			extensions="apar" icon="icons/etool16/run_parameter.gif" id="org.eclipse.amp.escape.ide.ParameterEditor"
+			name="Model Parameters">
+		</editor>
+		<editor class="org.eclipse.ui.editors.text.TextEditor" default="false"
+			extensions="atest" icon="icons/test_file.gif" id="org.eclipse.amp.escape.ide.TestEditor"
+			name="Model Test">
+		</editor>
+	</extension>-->
+</plugin>
+

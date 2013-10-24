@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id: plugin.xml,v 1.3 2010/08/04 01:54:07 mparker Exp $
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <wizard
+            category="org.eclipse.amp.amf.ide.wizards"
+            class="org.eclipse.amp.amf.adata.presentation.DataModelWizard"
+            icon="icons/full/obj16/DataModelFile.gif"
+            id="org.eclipse.amp.amf.adata.presentation.DataModelWizardID"
+            name="%_UI_DataModelWizard_label"
+            project="false">
+         <description>%_UI_DataModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            id="org.eclipse.amp.amf.adata.presentation.DataEditorID"
+            name="%_UI_DataEditor_label"
+            icon="icons/full/obj16/DataModelFile.gif"
+            extensions="adata"
+            class="org.eclipse.amp.amf.adata.presentation.DataEditor"
+            contributorClass="org.eclipse.amp.amf.adata.presentation.DataActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>

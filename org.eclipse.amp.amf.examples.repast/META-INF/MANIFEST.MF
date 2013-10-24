@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Repast
+Bundle-SymbolicName: org.eclipse.amp.amf.examples.repast
+Bundle-Version: 0.5.0.qualifier
+Bundle-ClassPath: .
+Require-Bundle: repast.simphony.core;bundle-version="1.2.0"

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.amp.agf.chart"
+      label="AMP AGF Chart (Incubation)"
+      version="0.9.0.qualifier"
+      provider-name="%providerName"
+      plugin="org.eclipse.amp.agf.chart"
+      image="eclipse_update_120.jpg">
+
+   <description url="http://eclipse.org/amp">
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.ui.views"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.birt.chart.ui"/>
+      <import plugin="org.eclipse.birt.chart.device.swt"/>
+      <import plugin="org.eclipse.amp.axf.core"/>
+      <import plugin="org.eclipse.amp.axf.views"/>
+      <import plugin="org.eclipse.amp.agf.core"/>
+      <import plugin="com.ibm.icu" version="4.0.1" match="greaterOrEqual"/>
+   </requires>
+
+   <plugin
+         id="org.eclipse.amp.agf.chart"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

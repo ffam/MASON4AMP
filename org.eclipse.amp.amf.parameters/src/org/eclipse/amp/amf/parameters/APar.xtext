@@ -1,0 +1,32 @@
+grammar org.eclipse.amp.amf.parameters.APar with org.eclipse.amp.amf.abase.ABase
+
+
+generate aPar "http://www.eclipse.org/amp/amf/parameters/APar"
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+import "http://www.eclipse.org/amp/amf/abase/ABase"
+import 'platform:/resource/org.eclipse.amp.amf.acore/src/model/metaabm.ecore'
+
+Model :
+	(name=STRING)?
+	"model" model=Import
+	("incorporates" (incorporates+=Incorporates))*
+	(parameters+=Parameter)*;
+
+Import :
+	importURI=STRING;
+
+Incorporates :
+	importURI=STRING;
+
+Parameter :
+	SingleParameter | SweepParameter | SweepLink;
+
+SingleParameter :
+	attribute=[SAttribute|ID] "=" value=Value;
+
+SweepParameter :
+	attribute=[SAttribute|ID] "[" startValue=Value "," endValue=Value "," increment=Value "]";
+
+SweepLink :
+	{SweepLink} "[" (parameters+=Parameter)* "]";
+	

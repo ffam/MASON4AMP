@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ManifestVersion: 2
+Bundle-Name: Acore MetaABM Ascape Generator Test
+Bundle-SymbolicName: org.eclipse.amp.amf.gen.ascape.test
+Bundle-Version: 0.8.5.qualifier
+Bundle-Vendor: Eclipse.org
+Require-Bundle: org.ascape.core,
+ org.ascape.ui.swing,
+ org.eclipse.amp.amf.gen.test,
+ org.eclipse.emf.mwe.core,
+ org.eclipse.emf.mwe.ui,
+ org.eclipse.jface.text,
+ org.eclipse.xpand,
+ org.eclipse.amp.amf.gen,
+ org.eclipse.amp.amf.gen.ascape,
+ org.eclipse.amp.amf.acore
+Bundle-ClassPath: .
+Import-Package: org.apache.commons.lang
