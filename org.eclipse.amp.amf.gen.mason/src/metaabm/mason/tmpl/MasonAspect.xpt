@@ -15,30 +15,6 @@
 
 «AROUND metaabm::mason::tmpl::JavaMason::ClassInheiritance FOR SContext-» extends SimState«ENDAROUND»
 «AROUND metaabm::mason::tmpl::JavaMason::ClassInheiritance FOR SAgent-» implements Steppable«ENDAROUND»
-«AROUND metaabm::mason::tmpl::JavaMason::ClassInheiritance FOR SStyle-»«ENDAROUND»
-
-«AROUND metaabm::mason::tmpl::JavaMason::Imports FOR SStyle-»
-	import java.awt.*;
-	import java.awt.Color;
-	import java.awt.event.*;
-	import java.awt.Graphics2D;
-	import javax.swing.*;
-	import javax.swing.JFrame;
-	import sim.engine.*;
-	import sim.engine.SimState;
-	import sim.display.*;
-	import sim.display.Controller;
-	import sim.display.GUIState;
-	import sim.portrayal.*;
-	import sim.portrayal.continuous.*;
-	import sim.portrayal.continuous.ContinuousPortrayal2D;
-	import sim.portrayal.DrawInfo2D;
-	import sim.portrayal.grid.*;
-	import sim.portrayal.network.*;
-	import sim.portrayal.simple.*;
-	import sim.portrayal.SimplePortrayal2D;
-	import sim.util.gui.*;
-«ENDAROUND»
 
 «AROUND metaabm::mason::tmpl::JavaMason::Imports FOR SAgent-»
 	import java.awt.*;
@@ -54,7 +30,6 @@
 	import sim.util.Double2D;
 	import ec.util.*;
 	
-	//import per la grafica
 	import java.awt.Color;
 	import java.awt.event.*;
 	import java.awt.Graphics2D;
@@ -211,15 +186,7 @@
 		«ENDIF-»
 	«ELSEIF function.id() == "randomIs"-»
         random().nextBoolean()
-        
-    «ELSEIF function.id() == "uniformDistribution"-»
-        randomInRange(«inputs.expression(path, inner).toString(", ")»);
-	«ELSEIF function.id() == "timeNow"-»
-		«path.last().accessPath(this, inner)»«reference.owner != null ? "getScape()." : ""»getPeriod()
-    «ELSEIF function.id() == "available"-»
-        isAvailable()
-    «ELSEIF function.id() == "withinBoundaries"-»
-        «expressionSink(path, function, inner)»
+ 
 	«ELSE-»
 		«targetDef.proceed()»
 	«ENDIF-»

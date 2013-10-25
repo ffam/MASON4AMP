@@ -33,7 +33,7 @@ public class MasonRuntimeConfigurator extends RuntimeConfigurator {
     public final static Configurator MASON_CONFIGURATOR = new MasonRuntimeConfigurator();
 
     /**
-     * Configures the ascape launch for a model. If model is null, then performs
+     * Configures the MASON launch for a model. If model is null, then performs
      * default configuration.
      * 
      * @param model
@@ -41,7 +41,6 @@ public class MasonRuntimeConfigurator extends RuntimeConfigurator {
      */
     public void configure(ILaunchConfigurationWorkingCopy config, IResource model) {
         super.configure(config, model);
-        //config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,"org.ascape.runtime.swing.SwingRunner");
         if (model != null) {
             File file = model.getLocation().toFile();
             try {
@@ -52,7 +51,7 @@ public class MasonRuntimeConfigurator extends RuntimeConfigurator {
 
             } catch (IOException e) {
                 StatusManager.getManager().handle(
-                                new Status(Status.WARNING, "org.eclipse.amp.amf.ide.ascape", "Couldn't load model.", e));
+                                new Status(Status.WARNING, "org.eclipse.amp.amf.ide.mason", "Couldn't load model.", e));
             }
         }
     }

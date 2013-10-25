@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.mason.core"
-      label="Mason Core"
-      version="17.0.0.qualifier"
+      label="MASON Core"
+      version="0.1.0.qualifier"
       provider-name="http://cs.gmu.edu/~eclab/projects/mason">
 
    <url>
-      <update label="Mason" url="http://cs.gmu.edu/~eclab/projects/mason"/>
+      <update label="MASON" url="http://cs.gmu.edu/~eclab/projects/mason"/>
    </url>
 
    <plugin
          id="org.mason.core"
          download-size="0"
          install-size="0"
-         version="17.0.0"
+         version="0.0.0"
          unpack="false"/>
 
 </feature>

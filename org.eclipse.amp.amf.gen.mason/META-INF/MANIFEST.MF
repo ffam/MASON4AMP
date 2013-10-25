@@ -2,12 +2,12 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: org.eclipse.amp.amf.gen.mason;singleton:=true
 Bundle-Name: %pluginName
-Bundle-Version: 0.9.0.qualifier
+Bundle-Version: 0.1.0.qualifier
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.amp.amf.acore,
  org.eclipse.amp.amf.gen,
- org.mason.core;bundle-version="1.7.0";visibility:=reexport
+ org.mason.core;bundle-version="17.0.0";visibility:=reexport
 Export-Package: metaabm.mason.tmpl,
  model,
  org.metaabm.gen.mason

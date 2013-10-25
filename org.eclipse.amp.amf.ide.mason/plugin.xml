@@ -29,7 +29,7 @@
           id="org.eclipse.amp.amf.mason.wizards.newProject"
           name="Agent Modeling Mason Project"
           project="true">
-      <description>Creates a new project for generating Mason implementations from MetaABM models.</description>
+      <description>Creates a new project for generating MASON implementations from MetaABM models.</description>
     </wizard>
     </extension>
     <extension

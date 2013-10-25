@@ -19,7 +19,6 @@ import java.util.Set;
 
 import org.eclipse.amp.amf.gen.ide.DocumentModelBuilder;
 import org.eclipse.amp.amf.gen.ide.GenIDEPlugin;
-import org.eclipse.amp.amf.gen.ide.MetaABMBuilder;
 import org.eclipse.amp.amf.gen.ide.PluginTemplateProjectWizard;
 
 public class MasonProjectWizard extends PluginTemplateProjectWizard {
