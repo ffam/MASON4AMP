@@ -52,28 +52,25 @@
 	
 	«targetDef.proceed()»
 	
+		
+	«EXPAND metaabm::mason::tmpl::AgentAspect::AgentBodyConstructor-»
 	
-	«EXPAND metaabm::mason::tmpl::ScapeAspect::AgentBodyConstructor-»
+	«EXPAND metaabm::mason::tmpl::AgentAspect::AgentBody-»
 	
-	«EXPAND metaabm::mason::tmpl::ScapeAspect::AgentBody-»
-	
-	«EXPAND metaabm::mason::tmpl::ScapeAspect::Step-»
+	«EXPAND metaabm::mason::tmpl::AgentAspect::Step-»
 	
 	
 «ENDAROUND»
 
 
 «AROUND metaabm::mason::tmpl::JavaMason::Body FOR SContext-»
-	
-	
-	«EXPAND metaabm::mason::tmpl::JavaMason::UtilBody»
-	 
-	
+		 
+	«targetDef.proceed()»
+		
 	public «implementation.className»(long seed){
 		super(seed);
 	}
 	
-	//Must add and after implement rule "start" 
 	
 	«EXPAND metaabm::mason::tmpl::JavaMason::GenerateComment»
 	
@@ -98,7 +95,9 @@
 	private Display2D display;
 	private JFrame displayFrame;
 
-	SparseGridPortrayal2D particlePortrayal = new SparseGridPortrayal2D();
+	
+	SparseGridPortrayal2D portrayal = new SparseGridPortrayal2D();
+
 	
 	public GUIState getGUIState(){
 		if(gui==null){
@@ -175,6 +174,7 @@
 	
 «ENDAROUND»
 
+
 «AROUND metaabm::mason::tmpl::JavaMason::FunctionInnerBlock (List[metaabm::act::AAct] path, Boolean inner) FOR ASink-»
     «IF function.id() == "randomUnit"-»
         random().nextDouble()
@@ -194,7 +194,7 @@
 
 «AROUND metaabm::mason::tmpl::JavaMason::OtherAccessors FOR SAgent-»
 	«targetDef.proceed()-»
-    «EXPAND metaabm::mason::tmpl::ScapeAspect::NameAccessor-»
+    «EXPAND metaabm::mason::tmpl::AgentAspect::NameAccessor-»
 «ENDAROUND»
 
 
@@ -211,11 +211,11 @@
 
 
 «AROUND metaabm::mason::tmpl::JavaMason::BeginSerialBlock(List[AAct] path, Boolean inner) FOR AControl-»
-	«EXPAND metaabm::mason::tmpl::ScapeAspect::BeginSerial(path, inner)-»
+	«EXPAND metaabm::mason::tmpl::AgentAspect::BeginSerial(path, inner)-»
     «targetDef.proceed()-»
 «ENDAROUND»
 «AROUND metaabm::mason::tmpl::JavaMason::EndSerialBlock(List[AAct] path, Boolean inner) FOR AControl-»
-	«EXPAND metaabm::mason::tmpl::ScapeAspect::EndSerial(path, inner)-»
+	«EXPAND metaabm::mason::tmpl::AgentAspect::EndSerial(path, inner)-»
     «targetDef.proceed()-»
 «ENDAROUND»
 

@@ -17,21 +17,34 @@
 	public «implementation.className»(SimState state){
 		this.random = state.random;
 		«parent.implementation.className.toFirstLower()» = («parent.implementation.className»)  state;
-		intializeNonFramework();
+		
+		«FOREACH acts() AS act-»
+				«IF act.label.matches("Initialize")-»
+					intializeNonFramework();
+				«ENDIF-»
+		«ENDFOREACH-»
 	}
 	
 	public «implementation.className»(){
+		«FOREACH acts() AS act-»
+				«IF act.label.matches("Initialize")-»
+					intializeNonFramework();
+				«ENDIF-»
+		«ENDFOREACH-»
 	}
 	«ENDIF»
 «ENDDEFINE»
 
 «DEFINE Step FOR SAgent-»
 	«IF parent != null»
-	//must add and implement rule "stepMethod"
+	/*
+	* add Rule stepMethod to «implementation.className»'s actions 
+	* if you want that the simulation does something
+	*/
 	public void step(SimState state)
         {
         «parent.implementation.className.toFirstLower()» = («parent.implementation.className»)state;
-		stepMethod(«parent.implementation.className.toFirstLower()»);
+		stepMethod();
 	}
 	«ENDIF»
 «ENDDEFINE»
@@ -47,12 +60,8 @@
 	«ENDIF-»
 «ENDDEFINE»
 
-«DEFINE ScapeBody FOR SContext-»
-    
-    «EXPAND metaabm::mason::tmpl::JavaMason::UtilBody-»
-    «EXPAND metaabm::mason::tmpl::JavaMason::Builder FOREACH projections-»
-	«EXPAND metaabm::mason::tmpl::JavaMason::Builder FOREACH agents-»
-«ENDDEFINE»
+
+
 
 «DEFINE NameAccessor FOR SAgent-»
 	«EXPAND metaabm::mason::tmpl::JavaMason::GenerateComment»

@@ -8,7 +8,7 @@
 «EXTENSION metaabm::tmpl::infer»
 «EXTENSION metaabm::tmpl::util»
 
-«REM»Author: Marco Amoruso & Francesco Farina «ENDREM»
+«REM»Author: Marco Amoruso & Francesco Farina«ENDREM»
 
 «DEFINE Model FOR SContext-»
     «EXPAND Files-»
