@@ -8,7 +8,7 @@
 «EXTENSION metaabm::tmpl::infer»
 «EXTENSION metaabm::tmpl::util»
 
-«REM»Author: Amoruso Marco & Francesco Farina «ENDREM»
+«REM»Author: Marco Amoruso & Francesco Farina «ENDREM»
 
 «DEFINE Model FOR SContext-»
     «EXPAND Files-»
@@ -22,7 +22,6 @@
 
 «DEFINE Files FOR SAgent-»
 	«EXPAND ClassFile-»
-    «EXPAND ClassFile FOREACH attributes.typeSelect(SState)-»
 «ENDDEFINE»
 
 
@@ -146,23 +145,6 @@
 	«ENDIF-»
 «ENDDEFINE» 
 
-«DEFINE Constructor FOR IID-»
-	«IF genComments()-»
-		/**
-		 * <!-- begin-user-doc -->
-		 * Constructs a new «label».
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-	 «ELSE »
-		 «EXPAND GenerateComment»
-	 «ENDIF-»
-	 public «EXPAND ClassName»(long seed) {
-	 	super(seed);
-		«EXPAND ConstructorBody-»
-	 }
-«ENDDEFINE»
-
 «DEFINE ProtectedRegion(String uniqueUseName) FOR IID-»
     «IF impl().mode == SImplementationMode::GenerateEmpty || impl().mode == SImplementationMode::GenerateProtected-»
     «PROTECT CSTART "/*" CEND "*/" ID qualName() + "_" + uniqueUseName-»
@@ -202,21 +184,12 @@
 «ENDDEFINE»
 
 «DEFINE MethodImpl FOR IID-»
- 	«IF methodName().matches("stepMethod")»
- 		public «methodTypeName()» «methodName()»(«parent().parent().impl().className» «parent().parent().impl().className.toFirstLower()» ) {
-		«EXPAND ProtectedRegion(methodName())-»
-	    «IF impl().mode != SImplementationMode::GenerateEmpty-» 
-	 		«EXPAND ActionBody-» 
-	    «ENDIF-»
-		}
- 	«ELSE»
  		public «methodTypeName()» «methodName()»(«methodParamList()») {
 	 	«EXPAND ProtectedRegion(methodName())-»
 	    «IF impl().mode != SImplementationMode::GenerateEmpty-» 
 	 		«EXPAND ActionBody-» 
 	    «ENDIF-»
 	 	}
-	«ENDIF»
 «ENDDEFINE»
 
 «DEFINE RootActivity FOR AMethod-»«ENDDEFINE»
@@ -451,57 +424,13 @@
 «DEFINE ConstructorBody FOR SAgent-»«ENDDEFINE»
 «DEFINE ConstructorBody FOR IID-»«ENDDEFINE»
 
-«DEFINE UtilBody FOR IID-»«ENDDEFINE»
-«DEFINE UtilBody FOR SImplemented-»
-    //todo, make this a useful value for evaluating compatibility of different versions of generated classes
-    «EXPAND GenerateComment»
-    private static final long serialVersionUID = 89989998L;
-    
-    «EXPAND GenerateComment»
-    private static long nextUniqueID;
-    
-    «EXPAND GenerateComment»
-    private long uniqueID;
-    
-    «EXPAND GenerateComment»
-    public long getUID() {
-    	if (uniqueID == 0) {
-    		uniqueID = nextUniqueID++;
-		}
-        return uniqueID;
-    }
-	
-    /**
-     * <!-- begin-user-doc -->
-     * Clones the agent, ensuring that a unique id is assigned.
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public Object clone() {
-        try {
-            «typeName()» clone = («typeName()») super.clone();
-            clone.uniqueID = 0;
-            return clone;
-        } catch (Exception e) {
-            throw new RuntimeException("Unexpected cloning exception: " + e);
-        }
-    }
-    
-	«IF testing()-»
-		«EXPAND GenerateComment»
-		@org.junit.Test
-		public void dummy() {
-			assertTrue(true);
-		}
-	«ENDIF-»
+«DEFINE Body FOR IID-»
 «ENDDEFINE»
-
-«DEFINE Body FOR IID-»«EXPAND UtilBody»«ENDDEFINE»
 «DEFINE Body FOR SAgent-»
-	«EXPAND UtilBody»
+	private static final long serialVersionUID = 1L;
 «ENDDEFINE»
 «DEFINE Body FOR SContext-»
-	«EXPAND UtilBody»
+	private static final long serialVersionUID = 1L;
 	«EXPAND Builder FOREACH projections-»
 	«EXPAND Builder FOREACH agents-»
 	«IF rootActivity != null-»
